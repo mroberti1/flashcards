@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Aprendizado de Inglês</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <h1>APRENDIZADO DE INGLÊS</h1>
+    <p class="subtitle">Escolha uma Forma de Estudar Hoje</p>
+  </header>
+
+  <main class="main-content">
+    <section class="menu">
+      <button id="btn-flashcards" class="menu-button">
+        <span class="icon">🃏</span>
+        <span class="text-main">FlashCards</span>
+        <span class="text-sub">Revise Vocabulário com Cartões</span>
+      </button>
+
+      <button id="btn-exercicios" class="menu-button">
+        <span class="icon">✏️</span>
+        <span class="text-main">Exercícios</span>
+        <span class="text-sub">Pratique com Atividades</span>
+      </button>
+    </section>
+
+    <!-- Section de FlashCards -->
+<section id="section-flashcards" class="panel hidden flashcards-center">
+  <h2 id="flashcards-title">FlashCards – Pessoas</h2>
+
+  <div class="topic-select-wrapper">
+    <label for="topic-select">Tema:</label>
+    <select id="topic-select">
+      <option value="people">Pessoas</option>
+      <option value="food">Comida e bebida</option>
+      <!-- Depois podemos adicionar Casa, Cidade etc. -->
+    </select>
+  </div>
+
+  <div class="flashcard-container"></div>
+</section>
+
+    <!-- Section de Exercícios -->
+    <section id="section-exercicios" class="panel hidden">
+      <h2>Exercícios</h2>
+      <p>Aqui você poderá adicionar seus exercícios de inglês.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Projeto de Estudos de Inglês · Criado por Maurício 😊</p>
+  </footer>
+
+  <!-- Agora o JS vem de um arquivo separado -->
+  <script src="app.js"></script>
+</body>
+</html>
