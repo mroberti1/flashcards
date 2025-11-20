@@ -14,6 +14,8 @@
   </header>
 
   <main class="main-content">
+
+    <!-- 🔥 MENU PRINCIPAL - SOMENTE UMA VEZ -->
     <section class="menu">
       <button id="btn-flashcards" class="menu-button">
         <span class="icon">🃏</span>
@@ -26,36 +28,52 @@
         <span class="text-main">Exercícios</span>
         <span class="text-sub">Pratique com Atividades</span>
       </button>
+
+      <a href="temas.html" class="menu-button">
+        <span class="icon">📚</span>
+        <span class="text-main">Todos os Temas</span>
+        <span class="text-sub">Veja quantas palavras há em cada tema</span>
+      </a>
+
+      <a href="estatisticas.html" class="menu-button">
+        <span class="icon">📊</span>
+        <span class="text-main">Estatísticas</span>
+        <span class="text-sub">Progresso por tema</span>
+      </a>
     </section>
 
     <!-- Section de FlashCards -->
-<section id="section-flashcards" class="panel hidden flashcards-center">
-  <h2 id="flashcards-title">FlashCards – Pessoas</h2>
+    <section id="section-flashcards" class="panel hidden">
+      <div class="flashcards-header">
+        <h2 id="flashcards-title">FlashCards – Pessoas</h2>
 
-  <div class="topic-select-wrapper">
-    <label for="topic-select">Tema:</label>
-    <select id="topic-select">
-      <option value="people">Pessoas</option>
-      <option value="food">Comida e bebida</option>
-      <!-- Depois podemos adicionar Casa, Cidade etc. -->
-    </select>
-  </div>
+        <div class="flashcards-controls">
+          <select id="topic-select">
+            <option value="people">A1 – Pessoas</option>
+            <option value="food">A1 – Comida e bebida</option>
+          </select>
 
-  <div class="flashcard-container"></div>
-</section>
+          <button id="btn-review-mode" class="pill-button">
+            🔁 Modo revisão
+          </button>
+        </div>
+      </div>
+
+      <div class="flashcard-container"></div>
+    </section>
 
     <!-- Section de Exercícios -->
     <section id="section-exercicios" class="panel hidden">
       <h2>Exercícios</h2>
       <p>Aqui você poderá adicionar seus exercícios de inglês.</p>
     </section>
+
   </main>
 
   <footer class="site-footer">
     <p>Projeto de Estudos de Inglês · Criado por Maurício 😊</p>
   </footer>
 
-  <!-- Agora o JS vem de um arquivo separado -->
   <script src="app.js"></script>
 </body>
 </html>

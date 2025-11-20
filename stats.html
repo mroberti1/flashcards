@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Estatísticas – FlashCards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      padding: 20px;
+    }
+
+    .stats-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 900px;
+      margin: 0 auto 20px;
+      gap: 10px;
+    }
+
+    .stats-header h1 {
+      margin: 0;
+    }
+
+    .stats-header a {
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #2563eb;
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
+    .stats-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .stats-card {
+      background: rgba(255,255,255,0.85);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      border: 1px solid #e5e7eb;
+      backdrop-filter: blur(6px);
+    }
+
+    .stats-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .stats-card-title {
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+
+    .stats-card-sub {
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    .stats-card-numbers {
+      font-size: 0.9rem;
+      color: #4b5563;
+    }
+
+    .stats-bar {
+      height: 8px;
+      width: 100%;
+      border-radius: 999px;
+      background: #e5e7eb;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .stats-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #22c55e, #16a34a);
+    }
+
+    .stats-empty {
+      text-align: center;
+      margin-top: 30px;
+      color: #6b7280;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .stats-card {
+        background: rgba(15,23,42,0.9);
+        border-color: #1f2937;
+        color: #e5e7eb;
+      }
+      .stats-card-sub {
+        color: #9ca3af;
+      }
+      .stats-card-numbers {
+        color: #d1d5db;
+      }
+      .stats-bar {
+        background: #374151;
+      }
+      body {
+        color: #e5e7eb;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="stats-header">
+    <h1>📊 Estatísticas gerais</h1>
+    <div>
+      <a href="index.html">🏠 Voltar ao início</a>
+    </div>
+  </header>
+
+  <main class="stats-container" id="stats-container">
+    <!-- Os cards serão gerados via JS -->
+  </main>
+
+  <!-- Carrega sua lógica (stats, temas, etc.) -->
+  <script src="app.js"></script>
+  <script>
+    // Usa o mesmo objeto "stats" e os mesmos temas do app.js
+
+    const temas = [
+      {
+        id: "people",
+        nome: "A1 – Pessoas",
+        items: (window.A1People && A1People.items) ? A1People.items : []
+      },
+      {
+        id: "food",
+        nome: "A1 – Comida e bebida",
+        items: (window.A1Food && A1Food.items) ? A1Food.items : []
+      }
+      // 👉 Quando criarmos A1Casa, A1Cidade etc., é só adicionar aqui
+    ];
+
+    const statsData = (window.stats || {});
+    const container = document.getElementById("stats-container");
+
+    if (!temas.length) {
+      const p = document.createElement("p");
+      p.classList.add("stats-empty");
+      p.textContent = "Nenhum tema configurado ainda.";
+      container.appendChild(p);
+    } else {
+      temas.forEach((t) => {
+        const total = t.items.length;
+        const s = statsData[t.id] || { reviewed: 0, learned: 0 };
+        const learned = s.learned || 0;
+        const reviewed = s.reviewed || 0;
+        const totalActions = learned + reviewed;
+        const progressPercent = total ? Math.round((learned / total) * 100) : 0;
+        const accuracyPercent = totalActions ? Math.round((learned / totalActions) * 100) : 0;
+        const reviewCount = t.items.filter(i => i.status === "review").length;
+
+        const card = document.createElement("article");
+        card.classList.add("stats-card");
+
+        card.innerHTML = `
+          <div class="stats-card-header">
+            <div>
+              <div class="stats-card-title">${t.nome}</div>
+              <div class="stats-card-sub">${total} palavras no total</div>
+            </div>
+            <div class="stats-card-sub">
+              Aprendidas: <strong>${learned}</strong> · Rever: <strong>${reviewCount}</strong>
+            </div>
+          </div>
+
+          <div class="stats-bar">
+            <div class="stats-bar-fill" style="width:${progressPercent}%;"></div>
+          </div>
+
+          <div class="stats-card-numbers">
+            Progresso: <strong>${progressPercent}%</strong> · 
+            Precisão: <strong>${accuracyPercent}%</strong> 
+            (Aprendidas / (Rever + Aprendidas))
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>

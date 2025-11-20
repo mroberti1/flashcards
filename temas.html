@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Temas – FlashCards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .tema-lista {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .tema-item {
+      padding: 15px 20px;
+      background: #ffffffaa;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      backdrop-filter: blur(6px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.1rem;
+      border: 1px solid #ddd;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tema-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .tema-nome {
+      font-weight: 600;
+    }
+
+    .tema-qtd {
+      font-size: 0.9rem;
+      color: #4b5563;
+    }
+
+    .tema-actions a {
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .tema-item {
+        background: rgba(15,23,42,0.9);
+        border-color: #1f2937;
+        color: #e5e7eb;
+      }
+      .tema-qtd {
+        color: #9ca3af;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📚 Lista de Temas</h1>
+
+  <div class="tema-lista" id="tema-lista"></div>
+
+  <!-- 1) Carrega os DADOS dos temas -->
+  <script src="data/A1-people.js"></script>
+  <script src="data/A1-food.js"></script>
+
+  <!-- 2) (Opcional) carrega app.js, se quiser reaproveitar stats no futuro -->
+  <script src="app.js"></script>
+
+  <!-- 3) Script ESPECÍFICO desta página -->
+  <script>
+    console.log("Temas.html carregado");
+    console.log("A1People existe?", typeof A1People, A1People);
+    console.log("A1Food existe?", typeof A1Food, A1Food);
+
+    const temas = [
+      {
+        id: "people",
+        nome: "A1 – Pessoas",
+        total: (window.A1People && A1People.items) ? A1People.items.length : 0
+      },
+      {
+        id: "food",
+        nome: "A1 – Comida e bebida",
+        total: (window.A1Food && A1Food.items) ? A1Food.items.length : 0
+      }
+      // 👉 Quando criar novos temas (A1Casa, A1Cidade etc.),
+      // é só adicionar mais objetos aqui.
+    ];
+
+    const container = document.getElementById("tema-lista");
+
+    temas.forEach((t) => {
+      const div = document.createElement("div");
+      div.classList.add("tema-item");
+
+      div.innerHTML = `
+        <div class="tema-info">
+          <span class="tema-nome">${t.nome}</span>
+          <span class="tema-qtd">${t.total} palavras</span>
+        </div>
+        <div class="tema-actions">
+          <a href="index.html?tema=${t.id}">Abrir tema</a>
+        </div>
+      `;
+
+      container.appendChild(div);
+    });
+  </script>
+</body>
+</html>

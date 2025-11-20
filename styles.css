@@ -1,4 +1,59 @@
 :root {
+  color-scheme: light dark;
+  --bg-dark: radial-gradient(circle at top, #1e293b, #020617);
+  --bg-light: #f9fafb;
+
+  --text-dark: #f9fafb;
+  --text-light: #020617;
+
+  --card-dark: rgba(15, 23, 42, 0.92);
+  --card-light: #ffffff;
+
+  --border-dark: #1f2937;
+  --border-light: #e5e7eb;
+}
+
+/* ESTILO BASE (vai ser "ajustado" pelos @media) */
+body {
+  background: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+/* Dark mode (quando o sistema está em escuro) */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: var(--bg-dark);
+    color: var(--text-dark);
+  }
+
+  .panel,
+  .flashcard,
+  .menu-button,
+  .stats-card {
+    background: var(--card-dark);
+    border-color: var(--border-dark);
+    color: var(--text-dark);
+  }
+}
+
+/* Light mode (quando o sistema está em claro) */
+@media (prefers-color-scheme: light) {
+  body {
+    background: var(--bg-light);
+    color: var(--text-light);
+  }
+
+  .panel,
+  .flashcard,
+  .menu-button,
+  .stats-card {
+    background: var(--card-light);
+    border-color: var(--border-light);
+    color: var(--text-light);
+  }
+}
+
+:root {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --bg-main: #050816;
   --bg-card: rgba(15, 23, 42, 0.9);
@@ -504,3 +559,143 @@ body {
   text-align: center;
 }
 
+.flashcards-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.flashcards-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Botão pílula moderno */
+.pill-button,
+.card-btn,
+.card-btn-reset,
+.action-btn {
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #4f46e5, #06b6d4);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease,
+              background 0.2s ease, opacity 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.pill-button:hover,
+.card-btn:hover,
+.card-btn-reset:hover,
+.action-btn:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.45);
+  opacity: 0.95;
+}
+
+.pill-button:active,
+.card-btn:active,
+.card-btn-reset:active,
+.action-btn:active {
+  transform: translateY(1px) scale(0.99);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.35);
+}
+
+/* Botão modo revisão ativo */
+#btn-review-mode.active {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+}
+
+/* Botões esquerda/direita com leve diferença */
+.card-btn-left {
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+}
+
+.card-btn-right {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+.card-btn-reset {
+  margin-top: 0.75rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #e5e7eb;
+  box-shadow: none;
+}
+
+/* Container dos dois botões principais */
+.flashcard-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Card mais moderno */
+.flashcard {
+  width: 100%;
+  max-width: 340px;
+  margin: 1rem auto;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(8px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.flashcard:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.8);
+}
+
+/* Mensagem de fim das novas */
+.no-new-words {
+  max-width: 380px;
+  margin: 0 auto 1rem;
+  text-align: center;
+}
+
+.no-new-words-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+/* Barra de progresso */
+.flashcard-progress {
+  max-width: 380px;
+  margin: 0 auto 0.75rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #e5e7eb;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.9);
+  overflow: hidden;
+  margin-bottom: 0.35rem;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e, #a3e635);
+  width: 0%;
+  transition: width 0.25s ease;
+}

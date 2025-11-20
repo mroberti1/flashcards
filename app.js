@@ -1,12 +1,12 @@
 /* ======================================
-   1) ESTADO GLOBAL
-   ====================================== */
+   ESTADO GLOBAL
+====================================== */
+console.log("✅ app.js carregado");
 
-// Tema atual e índice atual
 let currentTopic = "people";
-let currentIndex = 0; // começa no card 0 (id 1)
+let currentIndex = 0;
 
-// Estatísticas por tema (revisadas / aprendidas)
+// stats simples por tema
 let stats = {
   people: { reviewed: 0, learned: 0 },
   food: { reviewed: 0, learned: 0 }
@@ -14,170 +14,18 @@ let stats = {
 
 const STATS_STORAGE_KEY = "flashcards_stats_v1";
 
-/* ======================================
-   2) DADOS DOS TEMAS
-   ====================================== */
+// modos de revisão
+let forcedReviewOnly = false; // botão "Modo revisão": só palavras em status "review"
 
-const A1People = {
-  level: "A1",
-  topic: "people",
-  items: [
-    {
-      id: 1,
-      level: "A1",
-      topic: "people",
-      word: "father",
-      translation: "pai",
-      exampleEn: "My father works in an office.",
-      examplePt: "Meu pai trabalha em um escritório.",
-      status: "new",
-      nextReview: null
-    },
-    {
-      id: 2,
-      level: "A1",
-      topic: "people",
-      word: "mother",
-      translation: "mãe",
-      exampleEn: "My mother cooks very well.",
-      examplePt: "Minha mãe cozinha muito bem.",
-      status: "new",
-      nextReview: null
-    },
-    {
-      id: 3,
-      level: "A1",
-      topic: "people",
-      word: "brother",
-      translation: "irmão",
-      exampleEn: "My brother plays soccer.",
-      examplePt: "Meu irmão joga futebol.",
-      status: "new",
-      nextReview: null
-    },
-    {
-      id: 4,
-      level: "A1",
-      topic: "people",
-      word: "sister",
-      translation: "irmã",
-      exampleEn: "My sister studies English every day.",
-      examplePt: "Minha irmã estuda inglês todos os dias.",
-      status: "new",
-      nextReview: null
-    },
-    {
-      id: 5,
-      level: "A1",
-      topic: "people",
-      word: "friend",
-      translation: "amigo",
-      exampleEn: "He is my best friend.",
-      examplePt: "Ele é meu melhor amigo.",
-      status: "new",
-      nextReview: null
-    },
-    {
-      id: 6,
-      level: "A1",
-      topic: "people",
-      word: "family",
-      translation: "família",
-      exampleEn: "My family is very big.",
-      examplePt: "Minha família é muito grande.",
-      status: "new",
-      nextReview: null
-    },
-    {
-      id: 7,
-      level: "A1",
-      topic: "people",
-      word: "child",
-      translation: "criança",
-      exampleEn: "The child is playing in the park.",
-      examplePt: "A criança está brincando no parque.",
-      status: "new",
-      nextReview: null
-    },
-    {
-      id: 8,
-      level: "A1",
-      topic: "people",
-      word: "teacher",
-      translation: "professor",
-      exampleEn: "The teacher explains everything clearly.",
-      examplePt: "O professor explica tudo claramente.",
-      status: "new",
-      nextReview: null
-    },
-    {
-      id: 9,
-      level: "A1",
-      topic: "people",
-      word: "student",
-      translation: "estudante",
-      exampleEn: "The student is doing homework.",
-      examplePt: "O estudante está fazendo lição de casa.",
-      status: "new",
-      nextReview: null
-    },
-    {
-      id: 10,
-      level: "A1",
-      topic: "people",
-      word: "neighbor",
-      translation: "vizinho",
-      exampleEn: "My neighbor is very friendly.",
-      examplePt: "Meu vizinho é muito amigável.",
-      status: "new",
-      nextReview: null
-    }
-  ]
-};
-
-const A1Food = {
-  level: "A1",
-  topic: "food",
-  items: [
-    {
-      id: 1,
-      level: "A1",
-      topic: "food",
-      word: "apple",
-      translation: "maçã",
-      exampleEn: "I eat an apple every morning.",
-      examplePt: "Eu como uma maçã todas as manhãs.",
-      status: "new",
-      nextReview: null
-    },
-    {
-      id: 2,
-      level: "A1",
-      topic: "food",
-      word: "bread",
-      translation: "pão",
-      exampleEn: "She buys fresh bread every day.",
-      examplePt: "Ela compra pão fresco todos os dias.",
-      status: "new",
-      nextReview: null
-    },
-    {
-      id: 3,
-      level: "A1",
-      topic: "food",
-      word: "water",
-      translation: "água",
-      exampleEn: "I drink water all day.",
-      examplePt: "Eu bebo água o dia todo.",
-      status: "new",
-      nextReview: null
-    }
-  ]
-};
 
 /* ======================================
-   3) STATS – LOAD / SAVE
-   ====================================== */
+   DADOS DOS TEMAS
+====================================== */
+
+
+/* ======================================
+   STATS: LOAD / SAVE
+====================================== */
 
 function loadStats() {
   try {
@@ -205,9 +53,10 @@ function saveStats() {
 
 loadStats();
 
+
 /* ======================================
-   4) HELPERS – ITENS E TÍTULO
-   ====================================== */
+   HELPERS: ITENS, TÍTULO
+====================================== */
 
 function getCurrentItems() {
   switch (currentTopic) {
@@ -232,9 +81,10 @@ function updateFlashcardsTitle() {
   titleEl.textContent = `FlashCards – ${label}`;
 }
 
+
 /* ======================================
-   5) FUNÇÕES DE SRS (revisão)
-   ====================================== */
+   SRS: MARCAR APRENDIDA / REVER
+====================================== */
 
 function getFutureDate(days) {
   const date = new Date();
@@ -254,9 +104,10 @@ function markAsReview(item) {
   console.log(`Rever: ${item.word} | próxima revisão: ${item.nextReview}`);
 }
 
+
 /* ======================================
-   6) SWIPE (touch + mouse)
-   ====================================== */
+   SWIPE (TOUCH + MOUSE)
+====================================== */
 
 function addSwipe(card, item) {
   let startX = 0;
@@ -278,7 +129,7 @@ function addSwipe(card, item) {
 
   function finishSwipe() {
     if (currentX > threshold) {
-      // Direita = aprendida
+      // direita = aprendida
       markAsLearned(item);
       const s = stats[currentTopic];
       if (s) s.learned = (s.learned || 0) + 1;
@@ -290,7 +141,7 @@ function addSwipe(card, item) {
         showNextCard();
       }, 260);
     } else if (currentX < -threshold) {
-      // Esquerda = revisar
+      // esquerda = rever
       markAsReview(item);
       const s = stats[currentTopic];
       if (s) s.reviewed = (s.reviewed || 0) + 1;
@@ -343,21 +194,45 @@ function addSwipe(card, item) {
   });
 }
 
+
 /* ======================================
-   7) PRÓXIMO CARD
-   ====================================== */
+   PRÓXIMO CARD (SEQUÊNCIA 1,2,3...)
+====================================== */
 
 function showNextCard() {
-  const items = getCurrentItems();
-  if (!items.length) return;
+  const allItems = getCurrentItems();
 
-  currentIndex = (currentIndex + 1) % items.length;
+  let list;
+  if (forcedReviewOnly) {
+    list = allItems.filter(i => i.status === "review");
+  } else {
+    list = allItems; // aqui: mostra todos em sequência
+  }
+
+  if (!list.length) {
+    renderFlashcards(); // deixa o render cuidar das mensagens
+    return;
+  }
+
+  currentIndex = (currentIndex + 1) % list.length;
   renderFlashcards();
 }
 
+
 /* ======================================
-   8) RENDERIZAR FLASHCARDS
-   ====================================== */
+   MENSAGEM: SEM ITENS NO MODO ATUAL
+====================================== */
+
+function showEmptyMessage(msg) {
+  const container = document.querySelector(".flashcard-container");
+  if (!container) return;
+  container.innerHTML = `<p>${msg}</p>`;
+}
+
+
+/* ======================================
+   RENDERIZAR FLASHCARDS
+====================================== */
 
 function renderFlashcards() {
   const container = document.querySelector(".flashcard-container");
@@ -365,31 +240,39 @@ function renderFlashcards() {
 
   container.innerHTML = "";
 
-  const items = getCurrentItems();
-  if (!items.length) return;
-
-  if (currentIndex >= items.length) {
-    currentIndex = 0;
+  const allItems = getCurrentItems();
+  if (!allItems.length) {
+    showEmptyMessage("Não há palavras neste tema.");
+    return;
   }
+
+  let items;
+  if (forcedReviewOnly) {
+    items = allItems.filter(i => i.status === "review");
+    if (!items.length) {
+      showEmptyMessage("Não há palavras marcadas como REVER neste tema.");
+      return;
+    }
+  } else {
+    items = allItems;
+  }
+
+  if (currentIndex >= items.length) currentIndex = 0;
 
   const item = items[currentIndex];
   updateFlashcardsTitle();
 
+  // ===== STATS / CONTADORES =====
   const currentStats = stats[currentTopic] || { reviewed: 0, learned: 0 };
-  const totalItems = items.length;
+  const totalItems = allItems.length;
   const learned = currentStats.learned || 0;
   const reviewed = currentStats.reviewed || 0;
+  const reviewCount = allItems.filter(i => i.status === "review").length;
   const totalActions = learned + reviewed;
 
-  const progressPercent = totalItems
-    ? Math.round((learned / totalItems) * 100)
-    : 0;
+  const progressPercent = totalItems ? Math.round((learned / totalItems) * 100) : 0;
+  const accuracyPercent = totalActions ? Math.round((learned / totalActions) * 100) : 0;
 
-  const accuracyPercent = totalActions
-    ? Math.round((learned / totalActions) * 100)
-    : 0;
-
-  // === BARRA DE PROGRESSO ===
   const progress = document.createElement("div");
   progress.classList.add("flashcard-progress");
   progress.innerHTML = `
@@ -397,26 +280,18 @@ function renderFlashcards() {
       <div class="progress-bar-fill" style="width: ${progressPercent}%;"></div>
     </div>
     <p class="progress-text">
-      Aprendidas: <strong>${learned}</strong> de <strong>${totalItems}</strong>
-      (${progressPercent}%)
+      Aprendidas: <strong>${learned}</strong> de <strong>${totalItems}</strong> (${progressPercent}%)
     </p>
     <p class="progress-text">
-      Precisão: <strong>${accuracyPercent}%</strong> 
-      (Aprendidas / (Rever + Aprendidas))
+      Precisão: <strong>${accuracyPercent}%</strong> (Aprendidas / (Rever + Aprendidas))
+    </p>
+    <p class="progress-text">
+      Em REVER: <strong>${reviewCount}</strong>
     </p>
   `;
   container.appendChild(progress);
 
-  // === CONTADORES SIMPLES ===
-  const counters = document.createElement("div");
-  counters.classList.add("flashcard-counters");
-  counters.innerHTML = `
-    <p>🔁 Revisadas: <strong>${reviewed}</strong></p>
-    <p>✅ Aprendidas: <strong>${learned}</strong></p>
-  `;
-  container.appendChild(counters);
-
-  // === CARD PRINCIPAL ===
+  // ===== CARD =====
   const card = document.createElement("div");
   card.classList.add("flashcard");
   card.setAttribute("data-id", item.id);
@@ -442,12 +317,11 @@ function renderFlashcards() {
   addSwipe(card, item);
   container.appendChild(card);
 
-  // clique pra virar
   card.addEventListener("click", () => {
     card.classList.toggle("flipped");
   });
 
-  // === BOTÕES REVER / APRENDIDA ===
+  // ===== BOTÕES REVER / APRENDIDA =====
   const actions = document.createElement("div");
   actions.classList.add("flashcard-actions");
 
@@ -479,7 +353,7 @@ function renderFlashcards() {
   actions.appendChild(btnLearned);
   container.appendChild(actions);
 
-  // === BOTÃO RESET (SÓ DO TEMA ATUAL) ===
+  // ===== BOTÃO RESET =====
   const resetWrapper = document.createElement("div");
   resetWrapper.classList.add("flashcard-reset-wrapper");
 
@@ -488,8 +362,8 @@ function renderFlashcards() {
   btnReset.textContent = "Resetar progresso deste tema";
 
   btnReset.addEventListener("click", () => {
-    const allItems = getCurrentItems();
-    allItems.forEach((i) => {
+    const all = getCurrentItems();
+    all.forEach(i => {
       i.status = "new";
       i.nextReview = null;
     });
@@ -497,8 +371,9 @@ function renderFlashcards() {
       stats[currentTopic].reviewed = 0;
       stats[currentTopic].learned = 0;
     }
-    saveStats();
+    forcedReviewOnly = false;
     currentIndex = 0;
+    saveStats();
     renderFlashcards();
   });
 
@@ -506,15 +381,17 @@ function renderFlashcards() {
   container.appendChild(resetWrapper);
 }
 
+
 /* ======================================
-   9) BOTÕES E SEÇÕES
-   ====================================== */
+   BOTÕES / SEÇÕES
+====================================== */
 
 const btnFlashcards = document.getElementById("btn-flashcards");
 const btnExercicios = document.getElementById("btn-exercicios");
 const sectionFlashcards = document.getElementById("section-flashcards");
 const sectionExercicios = document.getElementById("section-exercicios");
 const topicSelect = document.getElementById("topic-select");
+const btnReviewMode = document.getElementById("btn-review-mode");
 
 function mostrarSection(section) {
   if (!sectionFlashcards || !sectionExercicios) return;
@@ -532,6 +409,7 @@ function mostrarSection(section) {
 
 if (btnFlashcards) {
   btnFlashcards.addEventListener("click", () => {
+    forcedReviewOnly = false;
     currentIndex = 0;
     renderFlashcards();
     mostrarSection(sectionFlashcards);
@@ -547,7 +425,33 @@ if (btnExercicios) {
 if (topicSelect) {
   topicSelect.addEventListener("change", () => {
     currentTopic = topicSelect.value; // "people" ou "food"
+    forcedReviewOnly = false;
     currentIndex = 0;
     renderFlashcards();
   });
+}
+
+if (btnReviewMode) {
+  btnReviewMode.addEventListener("click", () => {
+    forcedReviewOnly = !forcedReviewOnly;
+    currentIndex = 0;
+
+    if (forcedReviewOnly) {
+      btnReviewMode.classList.add("active");
+    } else {
+      btnReviewMode.classList.remove("active");
+    }
+
+    renderFlashcards();
+  });
+}
+
+// ===== CARREGAR TEMA VIA URL =====
+const params = new URLSearchParams(window.location.search);
+const temaURL = params.get("tema");
+
+if (temaURL) {
+  currentTopic = temaURL;   // ex: "people"
+  renderFlashcards();
+  mostrarSection(sectionFlashcards);
 }
