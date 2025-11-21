@@ -1,10 +1,11 @@
 /* ======================================
-   ESTADO GLOBAL
+   ESTADO GLOBAL & LOG INICIAL
 ====================================== */
+
 console.log("✅ app.js carregado");
 
-let currentTopic = "people";
-let currentIndex = 0;
+let currentTopic = "people"; // tema atual (people, food, etc.)
+let currentIndex = 0;        // índice atual dentro da lista
 
 // stats simples por tema
 let stats = {
@@ -15,12 +16,62 @@ let stats = {
 const STATS_STORAGE_KEY = "flashcards_stats_v1";
 
 // modos de revisão
-let forcedReviewOnly = false; // botão "Modo revisão": só palavras em status "review"
+// forcedReviewOnly = true → só mostra palavras com status "review"
+let forcedReviewOnly = false;
 
 
 /* ======================================
-   DADOS DOS TEMAS
+   🌗 TEMA DARK/LIGHT + SOM DE CLIQUE
 ====================================== */
+
+const THEME_KEY = "theme_preference_v1";
+
+// aplica tema e salva preferências
+function applyTheme(theme) {
+  const html = document.documentElement;
+  const isDark = theme === "dark";
+  html.classList.toggle("dark", isDark);
+  localStorage.setItem(THEME_KEY, isDark ? "dark" : "light");
+}
+
+// pega preferência salva ou do sistema
+(function initTheme() {
+  const savedTheme = localStorage.getItem(THEME_KEY);
+  if (savedTheme === "dark" || savedTheme === "light") {
+    applyTheme(savedTheme);
+  } else {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    applyTheme(prefersDark ? "dark" : "light");
+  }
+})();
+
+const themeBtn = document.getElementById("theme-toggle");
+
+// som de clique (opcional)
+let clickSound = null;
+try {
+  clickSound = new Audio("sounds/toggle.mp3");
+} catch (e) {
+  console.warn("Não foi possível carregar o som do toggle:", e);
+}
+
+function playClick() {
+  if (!clickSound) return;
+  clickSound.currentTime = 0;
+  clickSound.play().catch(() => {
+    // evita erro se o navegador bloquear autoplay
+  });
+}
+
+function handleThemeToggle() {
+  const isDark = document.documentElement.classList.contains("dark");
+  applyTheme(isDark ? "light" : "dark");
+  playClick();
+}
+
+if (themeBtn) {
+  themeBtn.addEventListener("click", handleThemeToggle);
+}
 
 
 /* ======================================
@@ -59,13 +110,14 @@ loadStats();
 ====================================== */
 
 function getCurrentItems() {
+  // A1People e A1Food vêm dos arquivos data/A1-people.js e data/A1-food.js
   switch (currentTopic) {
     case "people":
-      return A1People.items;
+      return (typeof A1People !== "undefined") ? A1People.items : [];
     case "food":
-      return A1Food.items;
+      return (typeof A1Food !== "undefined") ? A1Food.items : [];
     default:
-      return A1People.items;
+      return (typeof A1People !== "undefined") ? A1People.items : [];
   }
 }
 
@@ -206,11 +258,11 @@ function showNextCard() {
   if (forcedReviewOnly) {
     list = allItems.filter(i => i.status === "review");
   } else {
-    list = allItems; // aqui: mostra todos em sequência
+    list = allItems; // mostra todos em sequência
   }
 
   if (!list.length) {
-    renderFlashcards(); // deixa o render cuidar das mensagens
+    renderFlashcards(); // deixa o render cuidar da mensagem
     return;
   }
 
@@ -386,12 +438,12 @@ function renderFlashcards() {
    BOTÕES / SEÇÕES
 ====================================== */
 
-const btnFlashcards = document.getElementById("btn-flashcards");
-const btnExercicios = document.getElementById("btn-exercicios");
+const btnFlashcards   = document.getElementById("btn-flashcards");
+const btnExercicios   = document.getElementById("btn-exercicios");
 const sectionFlashcards = document.getElementById("section-flashcards");
 const sectionExercicios = document.getElementById("section-exercicios");
-const topicSelect = document.getElementById("topic-select");
-const btnReviewMode = document.getElementById("btn-review-mode");
+const topicSelect     = document.getElementById("topic-select");
+const btnReviewMode   = document.getElementById("btn-review-mode");
 
 function mostrarSection(section) {
   if (!sectionFlashcards || !sectionExercicios) return;
@@ -424,7 +476,7 @@ if (btnExercicios) {
 
 if (topicSelect) {
   topicSelect.addEventListener("change", () => {
-    currentTopic = topicSelect.value; // "people" ou "food"
+    currentTopic = topicSelect.value; // ex: "people" ou "food"
     forcedReviewOnly = false;
     currentIndex = 0;
     renderFlashcards();
@@ -447,6 +499,7 @@ if (btnReviewMode) {
 }
 
 // ===== CARREGAR TEMA VIA URL =====
+// Ex: index.html?tema=food
 const params = new URLSearchParams(window.location.search);
 const temaURL = params.get("tema");
 

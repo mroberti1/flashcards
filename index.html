@@ -8,15 +8,50 @@
 </head>
 
 <body>
+
+  <body>
   <header class="site-header">
     <h1>APRENDIZADO DE INGLÊS</h1>
-    <p class="subtitle">Escolha uma Forma de Estudar Hoje</p>
+
+    <!-- BOTÃO DARK/LIGHT CORRETO -->
+    <div class="theme-toggle-wrapper">
+      <button id="theme-toggle" aria-label="Alternar tema"></button>
+    </div>
   </header>
 
   <main class="main-content">
 
-    <!-- 🔥 MENU PRINCIPAL - SOMENTE UMA VEZ -->
     <section class="menu">
+      <button id="btn-flashcards" class="menu-button">
+        <span class="icon">🃏</span>
+        <span class="text-main">FlashCards</span>
+        <span class="text-sub">Revise Vocabulário</span>
+      </button>
+
+      <button id="btn-exercicios" class="menu-button">
+        <span class="icon">✏️</span>
+        <span class="text-main">Exercícios</span>
+        <span class="text-sub">Pratique com Atividades</span>
+      </button>
+
+      <a href="temas.html" class="menu-button">
+        <span class="icon">📚</span>
+        <span class="text-main">Todos os Temas</span>
+        <span class="text-sub">Veja as categorias</span>
+      </a>
+
+      <a href="estatisticas.html" class="menu-button">
+        <span class="icon">📊</span>
+        <span class="text-main">Estatísticas</span>
+        <span class="text-sub">Seu progresso geral</span>
+      </a>
+    </section>
+
+  <main class="main-content">
+
+    <!-- 🔥 MENU PRINCIPAL -->
+    <section class="menu">
+
       <button id="btn-flashcards" class="menu-button">
         <span class="icon">🃏</span>
         <span class="text-main">FlashCards</span>
@@ -40,14 +75,17 @@
         <span class="text-main">Estatísticas</span>
         <span class="text-sub">Progresso por tema</span>
       </a>
+
     </section>
 
-    <!-- Section de FlashCards -->
+    <!-- 🔥 FLASHCARDS -->
     <section id="section-flashcards" class="panel hidden">
+
       <div class="flashcards-header">
         <h2 id="flashcards-title">FlashCards – Pessoas</h2>
 
         <div class="flashcards-controls">
+
           <select id="topic-select">
             <option value="people">A1 – Pessoas</option>
             <option value="food">A1 – Comida e bebida</option>
@@ -56,13 +94,14 @@
           <button id="btn-review-mode" class="pill-button">
             🔁 Modo revisão
           </button>
+
         </div>
       </div>
 
       <div class="flashcard-container"></div>
     </section>
 
-    <!-- Section de Exercícios -->
+    <!-- 🔥 EXERCÍCIOS -->
     <section id="section-exercicios" class="panel hidden">
       <h2>Exercícios</h2>
       <p>Aqui você poderá adicionar seus exercícios de inglês.</p>

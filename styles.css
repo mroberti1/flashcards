@@ -1,292 +1,432 @@
-:root {
-  color-scheme: light dark;
-  --bg-dark: radial-gradient(circle at top, #1e293b, #020617);
-  --bg-light: #f9fafb;
-
-  --text-dark: #f9fafb;
-  --text-light: #020617;
-
-  --card-dark: rgba(15, 23, 42, 0.92);
-  --card-light: #ffffff;
-
-  --border-dark: #1f2937;
-  --border-light: #e5e7eb;
-}
-
-/* ESTILO BASE (vai ser "ajustado" pelos @media) */
-body {
-  background: var(--bg-dark);
-  color: var(--text-dark);
-}
-
-/* Dark mode (quando o sistema está em escuro) */
-@media (prefers-color-scheme: dark) {
-  body {
-    background: var(--bg-dark);
-    color: var(--text-dark);
-  }
-
-  .panel,
-  .flashcard,
-  .menu-button,
-  .stats-card {
-    background: var(--card-dark);
-    border-color: var(--border-dark);
-    color: var(--text-dark);
-  }
-}
-
-/* Light mode (quando o sistema está em claro) */
-@media (prefers-color-scheme: light) {
-  body {
-    background: var(--bg-light);
-    color: var(--text-light);
-  }
-
-  .panel,
-  .flashcard,
-  .menu-button,
-  .stats-card {
-    background: var(--card-light);
-    border-color: var(--border-light);
-    color: var(--text-light);
-  }
-}
-
-:root {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --bg-main: #050816;
-  --bg-card: rgba(15, 23, 42, 0.9);
-  --accent: #38bdf8;
-  --accent-soft: rgba(56, 189, 248, 0.15);
-  --text-main: #f9fafb;
-  --text-muted: #9ca3af;
-  --border-soft: rgba(148, 163, 184, 0.3);
-}
-
+/* ============================================================
+   RESET BÁSICO
+============================================================ */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
+html,
 body {
   margin: 0;
-  min-height: 100vh;
-  filter: brightness(1.35) saturate(1.12);
+  padding: 0;
+  height: 100%;
+}
 
-  /* Fundo com imagem + camada escura pra não atrapalhar a leitura */
-  background-image:
-    linear-gradient(to bottom, rgba(3, 7, 18, 0.88), rgba(3, 7, 18, 0.92)),
-    url("bg-ny-sf.png");
-background-image: url("bg-ny-sf.png");
-background-size: cover;
-background-position: center;
-background-repeat: no-repeat;
-background-attachment: fixed;
+/* ============================================================
+   VARIÁVEIS (LIGHT COMO PADRÃO)
+============================================================ */
+:root {
+  /* fundo e superfícies */
+  --bg: #e5edf5;
+  --card-bg: rgba(15, 23, 42, 0.92);
+  --card-border: rgba(148, 163, 184, 0.45);
+  --overlay-dark: rgba(0, 0, 0, 0.55);
 
-  color: #fff;
+  /* textos */
+  --text-primary: #0f172a;
+  --text-secondary: #4b5563;
+  --text-on-card: #e5e7eb;
+
+  /* botões */
+  --btn-bg: rgba(15, 23, 42, 0.96);
+  --btn-bg-soft: rgba(15, 23, 42, 0.88);
+  --btn-text: #f9fafb;
+  --btn-border: rgba(148, 163, 184, 0.5);
+
+  /* destaque */
+  --accent: #38bdf8;
+  --accent-soft: rgba(56, 189, 248, 0.18);
+
+  /* sombras */
+  --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.55);
+
+  /* flashcards */
+  --flashcard-front-label: #a5b4fc;
+  --flashcard-back-label: #f97316;
+}
+
+/* MODO DARK – quando o <html> tiver class="dark" */
+html.dark {
+  --bg: #020617; /* preto quase absoluto */
+  --card-bg: rgba(15, 23, 42, 0.96);
+  --card-border: rgba(148, 163, 184, 0.45);
+
+  --text-primary: #e5e7eb;
+  --text-secondary: #9ca3af;
+  --text-on-card: #f9fafb;
+
+  --btn-bg: rgba(15, 23, 42, 1);
+  --btn-bg-soft: rgba(15, 23, 42, 0.95);
+  --btn-text: #f9fafb;
+  --btn-border: rgba(148, 163, 184, 0.7);
+
+  --accent: #38bdf8;
+  --accent-soft: rgba(56, 189, 248, 0.25);
+
+  --flashcard-front-label: #a5b4fc;
+  --flashcard-back-label: #fdba74;
+}
+
+/* ============================================================
+   FUNDO (IMAGEM + OVERLAY NO DARK)
+============================================================ */
+
+body {
+  min-height: 100%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
+  color: var(--text-primary);
+  background: var(--bg) url("bg-ny-sf.png") no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* overlay mais escuro só no modo dark para dar contraste */
+html.dark body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-dark);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ============================================================
+   LAYOUT GERAL
+============================================================ */
+
+body {
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-
-.site-header,
-.main-content,
-.site-footer {
-  width: 100%;
-  max-width: 960px;
-  padding: 1.5rem;
-}
-
-.site-header {
-  text-align: center;
-  padding-top: 2.5rem;
-  padding-bottom: 1rem;
-}
-
-.site-header h1 {
-  margin: 0;
-  font-size: clamp(2.2rem, 4vw, 2.8rem);
-  letter-spacing: 0.04em;
-}
-
-.subtitle {
-  margin-top: 0.5rem;
-  color: var(--text-muted);
-  font-size: 0.95rem;
 }
 
 .main-content {
   flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 16px 80px;
 }
 
+/* ============================================================
+   HEADER + TÍTULOS
+============================================================ */
+
+.site-header {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.site-header h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3vw, 2.3rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-shadow: 0 2px 4px rgba(15, 23, 42, 0.6);
+}
+
+.site-header .subtitle {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* ============================================================
+   TOGGLE TEMA (ESTILO iOS)
+============================================================ */
+
+.theme-toggle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* botão */
+#theme-toggle {
+  position: relative;
+  width: 80px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: linear-gradient(135deg, #020617, #0f172a);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.6);
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  /* esconde qualquer texto/emoji interno para evitar "duas luas" */
+  font-size: 0;
+}
+
+/* trilho interno */
+#theme-toggle::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 20% 30%, #1e293b, #020617);
+}
+
+/* "bolinha" */
+#theme-toggle::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #f9fafb;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.8);
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+/* lua/sol em cima da bolinha (apenas visual, sem texto real) */
+#theme-toggle span {
+  display: none; /* garante que nada apareça se tiver span dentro */
+}
+
+#theme-toggle-icon-moon,
+#theme-toggle-icon-sun {
+  display: none;
+}
+
+/* ícones via pseudo no trilho */
+#theme-toggle::marker {
+  content: none;
+}
+
+/* lua à esquerda */
+#theme-toggle::before {
+  background:
+    radial-gradient(circle at 22% 50%, #facc15 0, #facc15 32%, transparent 34%)
+      left 8px center / 22px 22px no-repeat,
+    radial-gradient(circle at 0 50%, #020617 0, #020617 50%, transparent 52%)
+      left 13px center / 22px 22px no-repeat,
+    radial-gradient(circle at 80% 30%, #1e293b, #020617);
+}
+
+/* estado DARK: bolinha vai para a direita e ícones invertem */
+html.dark #theme-toggle::after {
+  transform: translateX(40px);
+  background: #0f172a;
+}
+
+/* sol à direita no dark */
+html.dark #theme-toggle::before {
+  background:
+    radial-gradient(circle at 78% 50%, #facc15 0, #facc15 32%, #f97316 60%)
+      right 8px center / 22px 22px no-repeat,
+    radial-gradient(circle at 20% 30%, #1e293b, #020617);
+}
+
+/* ============================================================
+   MENU DE CARDS
+============================================================ */
+
 .menu {
+  margin-top: 32px;
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  gap: 24px;
   justify-content: center;
-  margin-top: 2rem;
-  margin-bottom: 2.5rem;
 }
 
 .menu-button {
-  background: var(--bg-card);
-  border-radius: 1.5rem;
-  border: 1px solid var(--border-soft);
-  padding: 1.3rem 1.6rem;
-  min-width: min(260px, 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.3rem;
-  cursor: pointer;
   position: relative;
-  overflow: hidden;
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease,
-    border-color 0.18s ease,
+  width: min(340px, 100%);
+  padding: 18px 20px 18px 24px;
+  border-radius: 24px;
+  border: 1px solid var(--card-border);
+  background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.25), transparent),
+    var(--card-bg);
+  color: var(--text-on-card);
+  text-align: left;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 12px;
+  row-gap: 2px;
+  align-items: center;
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(10px);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease,
     background 0.18s ease;
 }
 
-.menu-button::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at top left, var(--accent-soft), transparent 55%);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.menu-button:hover::before {
-  opacity: 1;
-}
-
-.menu-button:hover {
-  transform: translateY(-3px) scale(1.01);
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.8);
-  border-color: var(--accent);
-}
-
 .menu-button .icon {
-  font-size: 1.8rem;
+  grid-row: span 2;
+  font-size: 1.6rem;
 }
 
 .menu-button .text-main {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.03em;
 }
 
 .menu-button .text-sub {
-  font-size: 0.9rem;
-  color: var(--text-muted);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
 }
 
+.menu-button:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 22px 55px rgba(15, 23, 42, 0.75);
+  background: radial-gradient(circle at 0 0, var(--accent-soft), transparent),
+    var(--card-bg);
+}
+
+/* ============================================================
+   PAINÉIS / SEÇÕES
+============================================================ */
+
 .panel {
-  background: var(--bg-card);
-  border-radius: 1.5rem;
-  border: 1px solid var(--border-soft);
-  padding: 1.5rem 1.6rem 1.8rem;
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.6);
+  margin-top: 36px;
+  padding: 24px 18px 40px;
+  border-radius: 24px;
+  border: 1px solid var(--card-border);
+  background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.18), transparent),
+    var(--card-bg);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(10px);
+  color: var(--text-on-card);
 }
 
 .panel h2 {
   margin-top: 0;
-  margin-bottom: 0.6rem;
+  margin-bottom: 12px;
   font-size: 1.4rem;
 }
 
 .panel p {
-  margin-top: 0.2rem;
-  color: var(--text-muted);
-  font-size: 0.95rem;
+  margin-top: 0;
+  color: var(--text-secondary);
 }
 
-/* ====== FLASHCARDS ====== */
+.hidden {
+  display: none;
+}
+
+/* ============================================================
+   HEADER DOS FLASHCARDS
+============================================================ */
+
+.flashcards-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+#flashcards-title {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+/* select de temas */
+#topic-select {
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--btn-border);
+  background: var(--btn-bg-soft);
+  color: var(--btn-text);
+  font-size: 0.9rem;
+}
+
+/* botão "Modo revisão" tipo pill */
+#btn-review-mode {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--btn-border);
+  background: transparent;
+  color: var(--btn-text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#btn-review-mode.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+/* ============================================================
+   FLASHCARDS
+============================================================ */
 
 .flashcard-container {
+  margin-top: 8px;
   display: flex;
   flex-direction: column;
-  align-items: center;   /* centraliza o card no eixo horizontal */
-  justify-content: flex-start;
-  gap: 0.75rem;
-  margin-top: 1rem;
-}
-
-
-.flashcard {
-
-  width: 280px;
-  height: 180px;
-  position: relative;
-  perspective: 1000px;
-  cursor: pointer;
-  touch-action: pan-y; /* permite arrastar na horizontal sem brigar com o scroll */
-}
-
-.flashcard-actions {
-  margin-top: 0.75rem;
-  display: flex;
-  justify-content: center;   /* 👈 centraliza o grupo de botões */
   align-items: center;
-  gap: 0.75rem;
 }
 
-.card-btn {
-  padding: 0.45rem 0.9rem;
+/* barra de progresso */
+.flashcard-progress {
+  width: 100%;
+  max-width: 520px;
+  margin-bottom: 18px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
   border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.7);
-  background: rgba(15, 23, 42, 0.9);
-  color: #e5e7eb;
-  font-size: 0.8rem;
+  background: rgba(15, 23, 42, 0.6);
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #22c55e, #14b8a6, #38bdf8);
+}
+
+/* card em si */
+.flashcard {
+  position: relative;
+  width: min(360px, 100%);
+  min-height: 220px;
+  border-radius: 20px;
+  border: 1px solid var(--card-border);
+  background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.2), transparent),
+    var(--card-bg);
+  box-shadow: var(--shadow-soft);
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  transform-style: preserve-3d;
+  transition: transform 0.4s ease, box-shadow 0.25s ease;
 }
 
-.card-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.6);
-}
-
-.card-btn-left {
-  border-color: #f97316;
-}
-
-.card-btn-right {
-  border-color: #22c55e;
+.flashcard:hover {
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.85);
 }
 
 .flashcard-face {
   position: absolute;
   inset: 0;
-  border-radius: 1.25rem;
-  border: 1px solid var(--border-soft);
-  background: rgba(15, 23, 42, 0.92);
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.7);
-  padding: 1rem 1.2rem;
+  padding: 18px 20px 20px;
+  backface-visibility: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.4rem;
-
-  backface-visibility: hidden;
-  transform-style: preserve-3d;
-  transition: transform 0.5s ease;
 }
-
-.flashcard {
-  position: relative;
-}
-
-.flashcard-number {
-  position: absolute;
-  top: 0.6rem;
-  right: 0.9rem;
-  font-size: 0.75rem;
-  opacity: 0.8;
-}
-
 
 .flashcard-front {
   transform: rotateY(0deg);
@@ -304,398 +444,223 @@ background-attachment: fixed;
   transform: rotateY(0deg);
 }
 
+.flashcard-number {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
 .flashcard-label {
-  font-size: 0.75rem;
+  margin: 4px 0 10px;
+  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  opacity: 0.7;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: var(--flashcard-front-label);
+}
+
+.flashcard-back .flashcard-label {
+  color: var(--flashcard-back-label);
 }
 
 .flashcard-word {
-  font-size: 1.4rem;
-  font-weight: 600;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--text-on-card);
 }
 
 .flashcard-hint {
+  margin: 0;
   font-size: 0.85rem;
-  opacity: 0.8;
+  color: var(--text-secondary);
 }
 
 .flashcard-example {
+  margin: 0;
   font-size: 0.9rem;
+  color: var(--text-on-card);
 }
 
 .flashcard-example .example-pt {
   display: block;
-  font-size: 0.8rem;
-  opacity: 0.8;
-  margin-top: 0.3rem;
+  margin-top: 4px;
+  color: var(--text-secondary);
 }
 
-.hidden {
-  display: none;
-}
-
-.site-footer {
+/* mensagem sem palavras */
+.no-new-words,
+.flashcard-container > p {
+  max-width: 480px;
   text-align: center;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  padding-bottom: 2rem;
+  color: var(--text-on-card);
 }
 
-/* Responsivo */
-@media (max-width: 600px) {
-  .menu-button {
-    align-items: center;
-    text-align: center;
-  }
-
-  .menu-button .text-main {
-    width: 100%;
-  }
-}
+/* ============================================================
+   BOTÕES REVER / APRENDIDA / RESET
+============================================================ */
 
 .flashcard-actions {
-  margin-top: 1rem;
-  display: flex;
-  justify-content: space-between;  /* 👈 um em cada lado */
-  gap: 0.75rem;
-  max-width: 320px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.card-btn {
-  flex: 1;
-  padding: 0.45rem 0.7rem;
-  border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.7);
-  background: rgba(15, 23, 42, 0.9);
-  color: #e5e7eb;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-}
-
-.card-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.6);
-}
-
-.card-btn-left {
-  border-color: #f97316; /* laranja */
-}
-
-.card-btn-right {
-  border-color: #22c55e; /* verde */
-}
-
-/* Botão de reset */
-.flashcard-reset-wrapper {
-  margin-top: 0.75rem;
+  margin-top: 16px;
   display: flex;
   justify-content: center;
-}
-
-.card-btn-reset {
-  padding: 0.35rem 0.9rem;
-  border-radius: 999px;
-  border: 1px dashed rgba(148, 163, 184, 0.7);
-  background: transparent;
-  color: #e5e7eb;
-  font-size: 0.75rem;
-  cursor: pointer;
-  opacity: 0.8;
-}
-
-.card-btn-reset:hover {
-  opacity: 1;
-  background: rgba(15, 23, 42, 0.8);
-}
-
-/* Centraliza toda a área dos flashcards */
-.flashcards-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 2rem;
-}
-
-/* Centraliza o título */
-#flashcards-title {
-  text-align: center;
-  font-size: 1.3rem;
-  margin-bottom: 1.5rem;
-  color: #fff; /* deixa o título branco */
-}
-
-/* Container dos cards agora completamente centralizado */
-.flashcard-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;   /* centra verticalmente */
-  width: 100%;
-  margin-top: 1rem;
-  gap: 1rem;
-}
-
-.flashcard-progress {
-  width: 100%;
-  max-width: 320px;
-  margin: 0 auto 0.5rem auto;
-  text-align: center;
-  color: #e5e7eb;
-  font-size: 0.85rem;
-}
-
-.progress-bar {
-  width: 100%;
-  height: 8px;
-  background: rgba(148, 163, 184, 0.3);
-  border-radius: 999px;
-  overflow: hidden;
-  margin-bottom: 0.35rem;
-}
-
-.progress-bar-fill {
-  height: 100%;
-  background: #22c55e;
-  width: 0%;
-  transition: width 0.25s ease;
-}
-
-.progress-text {
-  margin: 0;
-}
-
-.flashcard-counters {
-  text-align: center;
-  margin-bottom: 0.5rem;
-  font-size: 0.85rem;
-  color: #e5e7eb;
-}
-
-.flashcard-counters p {
-  margin: 2px 0;
-}
-
-.flashcard-actions {
-  margin-top: 0.75rem;
-  display: flex;
-  justify-content: center;
-  gap: 0.75rem;
-}
-
-.card-btn {
-  padding: 0.45rem 0.9rem;
-  border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.7);
-  background: rgba(15, 23, 42, 0.9);
-  color: #e5e7eb;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-}
-
-.card-btn-left {
-  border-color: #f97316;
-}
-
-.card-btn-right {
-  border-color: #22c55e;
-}
-
-.card-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.6);
-}
-
-.flashcard-reset-wrapper {
-  margin-top: 0.5rem;
-  display: flex;
-  justify-content: center;
-}
-
-.card-btn-reset {
-  padding: 0.35rem 0.9rem;
-  border-radius: 999px;
-  border: 1px dashed rgba(148, 163, 184, 0.7);
-  background: transparent;
-  color: #e5e7eb;
-  font-size: 0.75rem;
-  cursor: pointer;
-  opacity: 0.8;
-}
-
-.card-btn-reset:hover {
-  opacity: 1;
-  background: rgba(15, 23, 42, 0.8);
-}
-
-/* Garante que tudo respeita a largura da tela */
-body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Faz o card ficar bem em telas menores */
-.flashcard {
-  width: 90%;
-  max-width: 320px;
-}
-
-/* Botões um do lado do outro, mas com espaço e centralizados */
-.flashcard-actions {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;   /* 👈 se a tela for muito estreita, eles quebram pra baixo */
-}
-
-.card-btn {
-  min-width: 120px;
-  text-align: center;
-}
-
-.flashcards-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.flashcards-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-/* Botão pílula moderno */
-.pill-button,
-.card-btn,
-.card-btn-reset,
-.action-btn {
-  border: none;
-  padding: 0.6rem 1.4rem;
-  border-radius: 999px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  background: linear-gradient(135deg, #4f46e5, #06b6d4);
-  color: #ffffff;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.35);
-  transition: transform 0.15s ease, box-shadow 0.15s ease,
-              background 0.2s ease, opacity 0.15s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-}
-
-.pill-button:hover,
-.card-btn:hover,
-.card-btn-reset:hover,
-.action-btn:hover {
-  transform: translateY(-1px) scale(1.02);
-  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.45);
-  opacity: 0.95;
-}
-
-.pill-button:active,
-.card-btn:active,
-.card-btn-reset:active,
-.action-btn:active {
-  transform: translateY(1px) scale(0.99);
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.35);
-}
-
-/* Botão modo revisão ativo */
-#btn-review-mode.active {
-  background: linear-gradient(135deg, #f97316, #ea580c);
-}
-
-/* Botões esquerda/direita com leve diferença */
-.card-btn-left {
-  background: linear-gradient(135deg, #0ea5e9, #6366f1);
-}
-
-.card-btn-right {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-}
-
-.card-btn-reset {
-  margin-top: 0.75rem;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  color: #e5e7eb;
-  box-shadow: none;
-}
-
-/* Container dos dois botões principais */
-.flashcard-actions {
-  margin-top: 1rem;
-  display: flex;
-  justify-content: center;
-  gap: 0.75rem;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
-/* Card mais moderno */
-.flashcard {
-  width: 100%;
-  max-width: 340px;
-  margin: 1rem auto;
-  border-radius: 18px;
-  background: rgba(15, 23, 42, 0.75);
-  border: 1px solid rgba(148, 163, 184, 0.4);
-  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(8px);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.flashcard:hover {
-  transform: translateY(-4px) scale(1.01);
-  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.8);
-}
-
-/* Mensagem de fim das novas */
-.no-new-words {
-  max-width: 380px;
-  margin: 0 auto 1rem;
-  text-align: center;
-}
-
-.no-new-words-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-}
-
-/* Barra de progresso */
-.flashcard-progress {
-  max-width: 380px;
-  margin: 0 auto 0.75rem;
-  text-align: center;
-  font-size: 0.85rem;
-  color: #e5e7eb;
-}
-
-.progress-bar {
-  width: 100%;
-  height: 6px;
+.card-btn {
+  min-width: 140px;
+  padding: 10px 14px;
   border-radius: 999px;
-  background: rgba(15, 23, 42, 0.9);
-  overflow: hidden;
-  margin-bottom: 0.35rem;
+  border: 1px solid var(--btn-border);
+  background: var(--btn-bg-soft);
+  color: var(--btn-text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background 0.18s ease, transform 0.1s ease, box-shadow 0.18s ease;
 }
 
-.progress-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #22c55e, #a3e635);
-  width: 0%;
-  transition: width 0.25s ease;
+.card-btn-left {
+  background: rgba(248, 250, 252, 0.06);
+}
+
+.card-btn-right {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.card-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.5);
+}
+
+.flashcard-reset-wrapper {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+}
+
+.card-btn-reset {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px dashed rgba(148, 163, 184, 0.6);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+
+.site-footer {
+  text-align: center;
+  padding: 14px 16px 18px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-shadow: 0 1px 2px rgba(15, 23, 42, 0.7);
+}
+
+/* ============================================================
+   RESPONSIVO
+============================================================ */
+
+@media (max-width: 768px) {
+  .site-header {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .site-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .menu-button {
+    width: 100%;
+  }
+
+  .panel {
+    padding-inline: 16px;
+  }
+}
+
+/* HEADER — botão vai para a direita */
+.site-header {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.theme-toggle-wrapper {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+/* ============================================
+   DARK MODE TOGGLE — ESTILO iOS
+============================================ */
+
+.theme-toggle-wrapper {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+#theme-toggle {
+  position: relative;
+  width: 74px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 0; /* esconde texto interno */
+}
+
+/* LUA (modo claro) → aparece à esquerda */
+#theme-toggle::before {
+  content: "🌙";
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+}
+
+/* SOL (modo dark) → aparece à direita */
+html.dark #theme-toggle::before {
+  content: "☀️";
+  right: 8px;
+  left: auto;
+}
+
+/* Bolinha do toggle */
+#theme-toggle::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.40);
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+/* Animação da bolinha no modo dark */
+html.dark #theme-toggle::after {
+  transform: translateX(40px);
+  background: #0f172a;
 }
