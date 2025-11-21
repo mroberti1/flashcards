@@ -1,124 +1,100 @@
 /* ======================================
-   ESTADO GLOBAL & LOG INICIAL
+   APP.JS — LIMPO E SEM DUPLICAÇÕES
+   Compatível com seu index.html atual
 ====================================== */
 
 console.log("✅ app.js carregado");
 
-let currentTopic = "people"; // tema atual (people, food, etc.)
-let currentIndex = 0;        // índice atual dentro da lista
-
-// stats simples por tema
-let stats = {
-  people: { reviewed: 0, learned: 0 },
-  food: { reviewed: 0, learned: 0 }
-};
-
-const STATS_STORAGE_KEY = "flashcards_stats_v1";
-
-// modos de revisão
-// forcedReviewOnly = true → só mostra palavras com status "review"
-let forcedReviewOnly = false;
-
-
 /* ======================================
-   🌗 TEMA DARK/LIGHT + SOM DE CLIQUE
+   1) TEMA DARK/LIGHT (auto + botão)
 ====================================== */
 
 const THEME_KEY = "theme_preference_v1";
 
-// aplica tema e salva preferências
 function applyTheme(theme) {
   const html = document.documentElement;
   const isDark = theme === "dark";
   html.classList.toggle("dark", isDark);
   localStorage.setItem(THEME_KEY, isDark ? "dark" : "light");
+
+  // acessibilidade no botão
+  const btn = document.getElementById("theme-toggle");
+  if (btn) btn.setAttribute("aria-pressed", String(isDark));
 }
 
-// pega preferência salva ou do sistema
-(function initTheme() {
-  const savedTheme = localStorage.getItem(THEME_KEY);
-  if (savedTheme === "dark" || savedTheme === "light") {
-    applyTheme(savedTheme);
+function initTheme() {
+  const saved = localStorage.getItem(THEME_KEY);
+  if (saved === "dark" || saved === "light") {
+    applyTheme(saved);
   } else {
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     applyTheme(prefersDark ? "dark" : "light");
   }
-})();
 
-const themeBtn = document.getElementById("theme-toggle");
-
-// som de clique (opcional)
-let clickSound = null;
-try {
-  clickSound = new Audio("sounds/toggle.mp3");
-} catch (e) {
-  console.warn("Não foi possível carregar o som do toggle:", e);
-}
-
-function playClick() {
-  if (!clickSound) return;
-  clickSound.currentTime = 0;
-  clickSound.play().catch(() => {
-    // evita erro se o navegador bloquear autoplay
+  // se o sistema mudar, reflete aqui (a menos que usuário já tenha escolhido manualmente)
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+    const savedTheme = localStorage.getItem(THEME_KEY);
+    if (!savedTheme) applyTheme(e.matches ? "dark" : "light");
   });
 }
 
-function handleThemeToggle() {
-  const isDark = document.documentElement.classList.contains("dark");
-  applyTheme(isDark ? "light" : "dark");
-  playClick();
-}
+function setupThemeToggle() {
+  const themeBtn = document.getElementById("theme-toggle");
+  if (!themeBtn) return;
 
-if (themeBtn) {
-  themeBtn.addEventListener("click", handleThemeToggle);
+  themeBtn.addEventListener("click", () => {
+    const isDark = document.documentElement.classList.contains("dark");
+    applyTheme(isDark ? "light" : "dark");
+  });
 }
-
 
 /* ======================================
-   STATS: LOAD / SAVE
+   2) ESTADO GLOBAL / STATS
 ====================================== */
+
+let currentTopic = "people";
+let currentIndex = 0;
+
+let stats = {}; // vai ser preenchido do storage
+const STATS_STORAGE_KEY = "flashcards_stats_v1";
+
+// modo revisão: só status "review"
+let forcedReviewOnly = false;
 
 function loadStats() {
   try {
     const raw = localStorage.getItem(STATS_STORAGE_KEY);
-    if (!raw) return;
-    const parsed = JSON.parse(raw);
-    if (!parsed || typeof parsed !== "object") return;
-
-    stats = {
-      people: { reviewed: 0, learned: 0, ...(parsed.people || {}) },
-      food: { reviewed: 0, learned: 0, ...(parsed.food || {}) }
-    };
-  } catch (e) {
-    console.warn("Erro ao carregar stats:", e);
+    stats = raw ? JSON.parse(raw) : {};
+  } catch {
+    stats = {};
   }
 }
 
 function saveStats() {
-  try {
-    localStorage.setItem(STATS_STORAGE_KEY, JSON.stringify(stats));
-  } catch (e) {
-    console.warn("Erro ao salvar stats:", e);
-  }
+  localStorage.setItem(STATS_STORAGE_KEY, JSON.stringify(stats));
 }
 
-loadStats();
-
+function ensureTopicStats(topic) {
+  if (!stats[topic]) stats[topic] = { reviewed: 0, learned: 0 };
+}
 
 /* ======================================
-   HELPERS: ITENS, TÍTULO
+   3) TEMAS (carregados de data/*.js)
 ====================================== */
 
+// Mapeia os temas disponíveis vindos dos arquivos data/
+function getTopicsMap() {
+  return {
+    people: (typeof A1People !== "undefined") ? A1People.items : [],
+    food: (typeof A1Food !== "undefined") ? A1Food.items : [],
+    // adicione aqui novos temas futuramente:
+    // travel: (typeof A1Travel !== "undefined") ? A1Travel.items : [],
+  };
+}
+
 function getCurrentItems() {
-  // A1People e A1Food vêm dos arquivos data/A1-people.js e data/A1-food.js
-  switch (currentTopic) {
-    case "people":
-      return (typeof A1People !== "undefined") ? A1People.items : [];
-    case "food":
-      return (typeof A1Food !== "undefined") ? A1Food.items : [];
-    default:
-      return (typeof A1People !== "undefined") ? A1People.items : [];
-  }
+  const map = getTopicsMap();
+  return map[currentTopic] || [];
 }
 
 function updateFlashcardsTitle() {
@@ -129,84 +105,77 @@ function updateFlashcardsTitle() {
     people: "Pessoas",
     food: "Comida e bebida"
   };
-  const label = topicNames[currentTopic] || "Pessoas";
-  titleEl.textContent = `FlashCards – ${label}`;
+
+  titleEl.textContent = `FlashCards – ${topicNames[currentTopic] || currentTopic}`;
 }
 
-
 /* ======================================
-   SRS: MARCAR APRENDIDA / REVER
+   4) SRS: REVER / APRENDIDA
 ====================================== */
 
 function getFutureDate(days) {
-  const date = new Date();
-  date.setDate(date.getDate() + days);
-  return date.toISOString().split("T")[0];
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  return d.toISOString().split("T")[0];
 }
 
 function markAsLearned(item) {
   item.status = "learned";
   item.nextReview = getFutureDate(7);
-  console.log(`Aprendida: ${item.word} | próxima revisão: ${item.nextReview}`);
 }
 
 function markAsReview(item) {
   item.status = "review";
   item.nextReview = getFutureDate(2);
-  console.log(`Rever: ${item.word} | próxima revisão: ${item.nextReview}`);
 }
 
-
 /* ======================================
-   SWIPE (TOUCH + MOUSE)
+   5) SWIPE (TOUCH + MOUSE)
 ====================================== */
 
 function addSwipe(card, item) {
   let startX = 0;
   let currentX = 0;
-  const threshold = 70;
   let isDragging = false;
+  const threshold = 70;
 
   function setTransform(x) {
     card.style.transform = `translateX(${x}px) rotate(${x / 20}deg)`;
   }
 
   function resetPosition() {
-    card.style.transition = "transform 0.2s ease";
+    card.style.transition = "transform .2s ease";
     setTransform(0);
-    setTimeout(() => {
-      card.style.transition = "";
-    }, 200);
+    setTimeout(() => (card.style.transition = ""), 200);
   }
 
   function finishSwipe() {
     if (currentX > threshold) {
       // direita = aprendida
       markAsLearned(item);
-      const s = stats[currentTopic];
-      if (s) s.learned = (s.learned || 0) + 1;
+      ensureTopicStats(currentTopic);
+      stats[currentTopic].learned += 1;
       saveStats();
 
-      card.style.transition = "transform 0.25s ease";
+      card.style.transition = "transform .25s ease";
       setTransform(320);
-      setTimeout(() => {
-        showNextCard();
-      }, 260);
+      setTimeout(showNextCard, 260);
+
     } else if (currentX < -threshold) {
       // esquerda = rever
       markAsReview(item);
-      const s = stats[currentTopic];
-      if (s) s.reviewed = (s.reviewed || 0) + 1;
+      ensureTopicStats(currentTopic);
+      stats[currentTopic].reviewed += 1;
       saveStats();
 
-      card.style.transition = "transform 0.25s ease";
+      card.style.transition = "transform .25s ease";
       setTransform(-320);
-      setTimeout(() => {
-        showNextCard();
-      }, 260);
+      setTimeout(showNextCard, 260);
+
     } else {
       resetPosition();
     }
+
     currentX = 0;
     isDragging = false;
   }
@@ -246,23 +215,18 @@ function addSwipe(card, item) {
   });
 }
 
-
 /* ======================================
-   PRÓXIMO CARD (SEQUÊNCIA 1,2,3...)
+   6) PRÓXIMO CARD (sequência 1..N)
 ====================================== */
 
 function showNextCard() {
-  const allItems = getCurrentItems();
-
-  let list;
-  if (forcedReviewOnly) {
-    list = allItems.filter(i => i.status === "review");
-  } else {
-    list = allItems; // mostra todos em sequência
-  }
+  const all = getCurrentItems();
+  let list = forcedReviewOnly
+    ? all.filter(i => i.status === "review")
+    : all;
 
   if (!list.length) {
-    renderFlashcards(); // deixa o render cuidar da mensagem
+    renderFlashcards();
     return;
   }
 
@@ -270,21 +234,14 @@ function showNextCard() {
   renderFlashcards();
 }
 
-
 /* ======================================
-   MENSAGEM: SEM ITENS NO MODO ATUAL
+   7) RENDER
 ====================================== */
 
 function showEmptyMessage(msg) {
   const container = document.querySelector(".flashcard-container");
-  if (!container) return;
-  container.innerHTML = `<p>${msg}</p>`;
+  if (container) container.innerHTML = `<p>${msg}</p>`;
 }
-
-
-/* ======================================
-   RENDERIZAR FLASHCARDS
-====================================== */
 
 function renderFlashcards() {
   const container = document.querySelector(".flashcard-container");
@@ -294,19 +251,18 @@ function renderFlashcards() {
 
   const allItems = getCurrentItems();
   if (!allItems.length) {
-    showEmptyMessage("Não há palavras neste tema.");
+    showEmptyMessage("Não há palavras neste tema (arquivo de dados não carregado?).");
     return;
   }
 
-  let items;
-  if (forcedReviewOnly) {
-    items = allItems.filter(i => i.status === "review");
-    if (!items.length) {
-      showEmptyMessage("Não há palavras marcadas como REVER neste tema.");
-      return;
-    }
-  } else {
-    items = allItems;
+  // lista do modo atual
+  const items = forcedReviewOnly
+    ? allItems.filter(i => i.status === "review")
+    : allItems;
+
+  if (!items.length) {
+    showEmptyMessage("Não há palavras marcadas como REVER neste tema.");
+    return;
   }
 
   if (currentIndex >= items.length) currentIndex = 0;
@@ -314,39 +270,33 @@ function renderFlashcards() {
   const item = items[currentIndex];
   updateFlashcardsTitle();
 
-  // ===== STATS / CONTADORES =====
-  const currentStats = stats[currentTopic] || { reviewed: 0, learned: 0 };
+  ensureTopicStats(currentTopic);
+  const { learned = 0, reviewed = 0 } = stats[currentTopic];
+
   const totalItems = allItems.length;
-  const learned = currentStats.learned || 0;
-  const reviewed = currentStats.reviewed || 0;
   const reviewCount = allItems.filter(i => i.status === "review").length;
   const totalActions = learned + reviewed;
 
   const progressPercent = totalItems ? Math.round((learned / totalItems) * 100) : 0;
   const accuracyPercent = totalActions ? Math.round((learned / totalActions) * 100) : 0;
 
+  // ==== PROGRESSO ====
   const progress = document.createElement("div");
   progress.classList.add("flashcard-progress");
   progress.innerHTML = `
     <div class="progress-bar">
-      <div class="progress-bar-fill" style="width: ${progressPercent}%;"></div>
+      <div class="progress-bar-fill" style="width:${progressPercent}%"></div>
     </div>
-    <p class="progress-text">
-      Aprendidas: <strong>${learned}</strong> de <strong>${totalItems}</strong> (${progressPercent}%)
-    </p>
-    <p class="progress-text">
-      Precisão: <strong>${accuracyPercent}%</strong> (Aprendidas / (Rever + Aprendidas))
-    </p>
-    <p class="progress-text">
-      Em REVER: <strong>${reviewCount}</strong>
-    </p>
+    <p class="progress-text">Aprendidas: <strong>${learned}</strong> / ${totalItems} (${progressPercent}%)</p>
+    <p class="progress-text">Precisão: <strong>${accuracyPercent}%</strong></p>
+    <p class="progress-text">Em REVER: <strong>${reviewCount}</strong></p>
   `;
   container.appendChild(progress);
 
-  // ===== CARD =====
+  // ==== CARD ====
   const card = document.createElement("div");
-  card.classList.add("flashcard");
-  card.setAttribute("data-id", item.id);
+  card.className = "flashcard";
+  card.dataset.id = item.id;
 
   card.innerHTML = `
     <div class="flashcard-face flashcard-front">
@@ -360,7 +310,7 @@ function renderFlashcards() {
       <p class="flashcard-label">Verso</p>
       <p class="flashcard-word">${item.translation}</p>
       <p class="flashcard-example">
-        ${item.exampleEn} <br />
+        ${item.exampleEn}<br />
         <span class="example-pt">${item.examplePt}</span>
       </p>
     </div>
@@ -369,60 +319,53 @@ function renderFlashcards() {
   addSwipe(card, item);
   container.appendChild(card);
 
-  card.addEventListener("click", () => {
-    card.classList.toggle("flipped");
-  });
+  card.addEventListener("click", () => card.classList.toggle("flipped"));
 
-  // ===== BOTÕES REVER / APRENDIDA =====
+  // ==== BOTÕES ====
   const actions = document.createElement("div");
-  actions.classList.add("flashcard-actions");
+  actions.className = "flashcard-actions";
 
   const btnReview = document.createElement("button");
-  btnReview.classList.add("card-btn", "card-btn-left");
+  btnReview.className = "card-btn card-btn-left";
   btnReview.textContent = "⟵ Rever";
 
   const btnLearned = document.createElement("button");
-  btnLearned.classList.add("card-btn", "card-btn-right");
+  btnLearned.className = "card-btn card-btn-right";
   btnLearned.textContent = "Aprendida ⟶";
 
   btnReview.addEventListener("click", () => {
     markAsReview(item);
-    const s = stats[currentTopic];
-    if (s) s.reviewed = (s.reviewed || 0) + 1;
+    ensureTopicStats(currentTopic);
+    stats[currentTopic].reviewed += 1;
     saveStats();
     showNextCard();
   });
 
   btnLearned.addEventListener("click", () => {
     markAsLearned(item);
-    const s = stats[currentTopic];
-    if (s) s.learned = (s.learned || 0) + 1;
+    ensureTopicStats(currentTopic);
+    stats[currentTopic].learned += 1;
     saveStats();
     showNextCard();
   });
 
-  actions.appendChild(btnReview);
-  actions.appendChild(btnLearned);
+  actions.append(btnReview, btnLearned);
   container.appendChild(actions);
 
-  // ===== BOTÃO RESET =====
+  // ==== RESET ====
   const resetWrapper = document.createElement("div");
-  resetWrapper.classList.add("flashcard-reset-wrapper");
+  resetWrapper.className = "flashcard-reset-wrapper";
 
   const btnReset = document.createElement("button");
-  btnReset.classList.add("card-btn-reset");
+  btnReset.className = "card-btn-reset";
   btnReset.textContent = "Resetar progresso deste tema";
 
   btnReset.addEventListener("click", () => {
-    const all = getCurrentItems();
-    all.forEach(i => {
+    allItems.forEach(i => {
       i.status = "new";
       i.nextReview = null;
     });
-    if (stats[currentTopic]) {
-      stats[currentTopic].reviewed = 0;
-      stats[currentTopic].learned = 0;
-    }
+    stats[currentTopic] = { reviewed: 0, learned: 0 };
     forcedReviewOnly = false;
     currentIndex = 0;
     saveStats();
@@ -433,78 +376,70 @@ function renderFlashcards() {
   container.appendChild(resetWrapper);
 }
 
-
 /* ======================================
-   BOTÕES / SEÇÕES
+   8) BOTÕES / SEÇÕES / INIT
 ====================================== */
 
-const btnFlashcards   = document.getElementById("btn-flashcards");
-const btnExercicios   = document.getElementById("btn-exercicios");
-const sectionFlashcards = document.getElementById("section-flashcards");
-const sectionExercicios = document.getElementById("section-exercicios");
-const topicSelect     = document.getElementById("topic-select");
-const btnReviewMode   = document.getElementById("btn-review-mode");
-
 function mostrarSection(section) {
+  const sectionFlashcards = document.getElementById("section-flashcards");
+  const sectionExercicios = document.getElementById("section-exercicios");
   if (!sectionFlashcards || !sectionExercicios) return;
 
   sectionFlashcards.classList.add("hidden");
   sectionExercicios.classList.add("hidden");
-
   section.classList.remove("hidden");
-
-  window.scrollTo({
-    top: section.offsetTop - 20,
-    behavior: "smooth"
-  });
 }
 
-if (btnFlashcards) {
-  btnFlashcards.addEventListener("click", () => {
-    forcedReviewOnly = false;
-    currentIndex = 0;
-    renderFlashcards();
-    mostrarSection(sectionFlashcards);
-  });
+function setupUI() {
+  const btnFlashcards = document.getElementById("btn-flashcards");
+  const btnExercicios = document.getElementById("btn-exercicios");
+  const sectionFlashcards = document.getElementById("section-flashcards");
+  const sectionExercicios = document.getElementById("section-exercicios");
+  const topicSelect = document.getElementById("topic-select");
+  const btnReviewMode = document.getElementById("btn-review-mode");
+
+  if (btnFlashcards && sectionFlashcards) {
+    btnFlashcards.addEventListener("click", () => {
+      forcedReviewOnly = false;
+      currentIndex = 0;
+      renderFlashcards();
+      mostrarSection(sectionFlashcards);
+    });
+  }
+
+  if (btnExercicios && sectionExercicios) {
+    btnExercicios.addEventListener("click", () => {
+      mostrarSection(sectionExercicios);
+    });
+  }
+
+  if (topicSelect) {
+    topicSelect.addEventListener("change", () => {
+      currentTopic = topicSelect.value;
+      forcedReviewOnly = false;
+      currentIndex = 0;
+      renderFlashcards();
+    });
+  }
+
+  if (btnReviewMode) {
+    btnReviewMode.addEventListener("click", () => {
+      forcedReviewOnly = !forcedReviewOnly;
+      currentIndex = 0;
+      btnReviewMode.classList.toggle("active", forcedReviewOnly);
+      renderFlashcards();
+    });
+  }
+
+  // tema via URL: index.html?tema=food
+  const params = new URLSearchParams(window.location.search);
+  const temaURL = params.get("tema");
+  if (temaURL) currentTopic = temaURL;
 }
 
-if (btnExercicios) {
-  btnExercicios.addEventListener("click", () => {
-    mostrarSection(sectionExercicios);
-  });
-}
-
-if (topicSelect) {
-  topicSelect.addEventListener("change", () => {
-    currentTopic = topicSelect.value; // ex: "people" ou "food"
-    forcedReviewOnly = false;
-    currentIndex = 0;
-    renderFlashcards();
-  });
-}
-
-if (btnReviewMode) {
-  btnReviewMode.addEventListener("click", () => {
-    forcedReviewOnly = !forcedReviewOnly;
-    currentIndex = 0;
-
-    if (forcedReviewOnly) {
-      btnReviewMode.classList.add("active");
-    } else {
-      btnReviewMode.classList.remove("active");
-    }
-
-    renderFlashcards();
-  });
-}
-
-// ===== CARREGAR TEMA VIA URL =====
-// Ex: index.html?tema=food
-const params = new URLSearchParams(window.location.search);
-const temaURL = params.get("tema");
-
-if (temaURL) {
-  currentTopic = temaURL;   // ex: "people"
-  renderFlashcards();
-  mostrarSection(sectionFlashcards);
-}
+document.addEventListener("DOMContentLoaded", () => {
+  initTheme();
+  setupThemeToggle();
+  loadStats();
+  setupUI();
+});

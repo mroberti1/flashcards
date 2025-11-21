@@ -8,19 +8,22 @@
 </head>
 
 <body>
-
-  <body>
+  <!-- ✅ HEADER COM BOTÃO DARK/LIGHT À DIREITA -->
   <header class="site-header">
-    <h1>APRENDIZADO DE INGLÊS</h1>
+    <div>
+      <h1>APRENDIZADO DE INGLÊS</h1>
+      <p class="subtitle">Escolha uma forma de estudar hoje</p>
+    </div>
 
-    <!-- BOTÃO DARK/LIGHT CORRETO -->
     <div class="theme-toggle-wrapper">
+      <!-- botão de tema iOS (o visual vem do CSS) -->
       <button id="theme-toggle" aria-label="Alternar tema"></button>
     </div>
   </header>
 
   <main class="main-content">
 
+    <!-- ✅ MENU PRINCIPAL (APENAS 1 VEZ) -->
     <section class="menu">
       <button id="btn-flashcards" class="menu-button">
         <span class="icon">🃏</span>
@@ -47,45 +50,12 @@
       </a>
     </section>
 
-  <main class="main-content">
-
-    <!-- 🔥 MENU PRINCIPAL -->
-    <section class="menu">
-
-      <button id="btn-flashcards" class="menu-button">
-        <span class="icon">🃏</span>
-        <span class="text-main">FlashCards</span>
-        <span class="text-sub">Revise Vocabulário com Cartões</span>
-      </button>
-
-      <button id="btn-exercicios" class="menu-button">
-        <span class="icon">✏️</span>
-        <span class="text-main">Exercícios</span>
-        <span class="text-sub">Pratique com Atividades</span>
-      </button>
-
-      <a href="temas.html" class="menu-button">
-        <span class="icon">📚</span>
-        <span class="text-main">Todos os Temas</span>
-        <span class="text-sub">Veja quantas palavras há em cada tema</span>
-      </a>
-
-      <a href="estatisticas.html" class="menu-button">
-        <span class="icon">📊</span>
-        <span class="text-main">Estatísticas</span>
-        <span class="text-sub">Progresso por tema</span>
-      </a>
-
-    </section>
-
-    <!-- 🔥 FLASHCARDS -->
+    <!-- ✅ SECTION FLASHCARDS -->
     <section id="section-flashcards" class="panel hidden">
-
       <div class="flashcards-header">
         <h2 id="flashcards-title">FlashCards – Pessoas</h2>
 
         <div class="flashcards-controls">
-
           <select id="topic-select">
             <option value="people">A1 – Pessoas</option>
             <option value="food">A1 – Comida e bebida</option>
@@ -94,14 +64,13 @@
           <button id="btn-review-mode" class="pill-button">
             🔁 Modo revisão
           </button>
-
         </div>
       </div>
 
       <div class="flashcard-container"></div>
     </section>
 
-    <!-- 🔥 EXERCÍCIOS -->
+    <!-- ✅ SECTION EXERCÍCIOS -->
     <section id="section-exercicios" class="panel hidden">
       <h2>Exercícios</h2>
       <p>Aqui você poderá adicionar seus exercícios de inglês.</p>
@@ -113,6 +82,11 @@
     <p>Projeto de Estudos de Inglês · Criado por Maurício 😊</p>
   </footer>
 
+  <!-- ✅ ARQUIVOS DE DADOS (SEMPRE ANTES DO APP.JS) -->
+  <script src="data/A1-people.js"></script>
+  <script src="data/A1-food.js"></script>
+
+  <!-- ✅ ARQUIVO PRINCIPAL -->
   <script src="app.js"></script>
 </body>
 </html>
