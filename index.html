@@ -1,69 +1,63 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Aprendizado de Inglês</title>
+  <title>English Learning</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
+
   <!-- HEADER -->
   <header class="site-header">
-    <div>
-      <h1>APRENDIZADO DE INGLÊS</h1>
-      <p class="subtitle">Escolha uma forma de estudar hoje</p>
+    <div class="header-left">
+      <h1>ENGLISH LEARNING</h1>
+      <p class="subtitle">Choose how you want to study today</p>
     </div>
-
     <div class="theme-toggle-wrapper">
-      <button id="theme-toggle" aria-label="Alternar tema"></button>
+      <button id="theme-toggle" aria-label="Toggle theme"></button>
     </div>
   </header>
 
   <main class="main-content">
 
-    <!-- MENU PRINCIPAL -->
+    <!-- MAIN MENU -->
     <section class="menu">
-
       <button id="btn-flashcards" class="menu-button">
         <span class="icon">🃏</span>
-        <span class="text-main">FlashCards</span>
-        <span class="text-sub">Revise Vocabulário</span>
+        <span class="text-main">Flashcards</span>
+        <span class="text-sub">Review vocabulary with cards</span>
       </button>
 
-      <button id="btn-exercicios" class="menu-button">
+      <button id="btn-exercises" class="menu-button">
         <span class="icon">✏️</span>
-        <span class="text-main">Exercícios</span>
-        <span class="text-sub">Pratique com Atividades</span>
+        <span class="text-main">Exercises</span>
+        <span class="text-sub">Practice with activities</span>
       </button>
 
-      <a href="temas.html" class="menu-button">
+      <a href="topics.html" class="menu-button">
         <span class="icon">📚</span>
-        <span class="text-main">Todos os Temas</span>
-        <span class="text-sub">Veja as categorias</span>
+        <span class="text-main">All Topics</span>
+        <span class="text-sub">See vocabulary categories</span>
       </a>
 
       <a href="stats.html" class="menu-button">
         <span class="icon">📊</span>
-        <span class="text-main">Estatísticas</span>
-        <span class="text-sub">Seu progresso geral</span>
+        <span class="text-main">Statistics</span>
+        <span class="text-sub">Your progress by topic</span>
       </a>
-
     </section>
 
-    <!-- FLASHCARDS -->
+    <!-- FLASHCARDS SECTION -->
     <section id="section-flashcards" class="panel hidden">
       <div class="flashcards-header">
-        <h2 id="flashcards-title">FlashCards – Pessoas</h2>
+        <h2 id="flashcards-title">Flashcards</h2>
 
         <div class="flashcards-controls">
-          <select id="topic-select">
-            <option value="people">A1 – Pessoas</option>
-            <option value="food">A1 – Comida e bebida</option>
-          </select>
+          <select id="topic-select"></select>
 
           <button id="btn-review-mode" class="pill-button">
-            🔁 Modo revisão
+            🔁 Review mode
           </button>
         </div>
       </div>
@@ -71,23 +65,23 @@
       <div class="flashcard-container"></div>
     </section>
 
-    <!-- EXERCÍCIOS -->
-    <section id="section-exercicios" class="panel hidden">
-      <h2>Exercícios</h2>
-      <p>Aqui você poderá adicionar seus exercícios de inglês.</p>
+    <!-- EXERCISES SECTION -->
+    <section id="section-exercises" class="panel hidden">
+      <h2>Exercises</h2>
+      <p>Add your exercises here.</p>
     </section>
 
   </main>
 
   <footer class="site-footer">
-    <p>Projeto de Estudos de Inglês · Criado por Maurício Moraes Roberti 😊</p>
+    <p>English Study Project · Created by Maurício Moraes Roberti 😊</p>
   </footer>
 
-  <!-- DADOS -->
+  <!-- DATA FILES (ALWAYS BEFORE app.js) -->
   <script src="data/A1-people.js"></script>
   <script src="data/A1-food.js"></script>
 
-  <!-- APP -->
+  <!-- MAIN APP -->
   <script src="app.js"></script>
 </body>
 </html>
