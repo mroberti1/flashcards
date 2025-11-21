@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>All Topics</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-left">
+      <h1>ALL TOPICS</h1>
+      <p class="subtitle">Browse vocabulary categories</p>
+    </div>
+    <div class="theme-toggle-wrapper">
+      <button id="theme-toggle" aria-label="Toggle theme"></button>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section class="panel">
+      <h2 style="text-align:center;margin-top:0;">Topics Overview</h2>
+      <div id="topics-list" class="topics-list"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p><a href="index.html">← Back to Home</a></p>
+  </footer>
+
+  <script src="data/A1-people.js"></script>
+  <script src="data/A1-food.js"></script>
+  <script src="app.js"></script>
+
+  <script>
+    const listEl = document.getElementById("topics-list");
+    const topics = window.__TOPICS_REGISTRY__ || [];
+
+    listEl.innerHTML = topics.map(t => {
+      const total = (t.items || []).length;
+      return `
+        <a class="menu-button" href="index.html?tema=${t.topic}">
+          <span class="icon">📌</span>
+          <span class="text-main">${t.label}</span>
+          <span class="text-sub">${total} words</span>
+        </a>
+      `;
+    }).join("");
+  </script>
+</body>
+</html>
