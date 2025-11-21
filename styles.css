@@ -1,5 +1,5 @@
 /* ============================================================
-   RESET BÁSICO
+   0) RESET / BASE
 ============================================================ */
 *,
 *::before,
@@ -7,55 +7,63 @@
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   margin: 0;
   padding: 0;
   height: 100%;
 }
 
+body {
+  min-height: 100%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
+  line-height: 1.4;
+}
+
+
 /* ============================================================
-   VARIÁVEIS (LIGHT COMO PADRÃO)
+   1) TOKENS DE TEMA (LIGHT PADRÃO)
 ============================================================ */
 :root {
-  /* fundo e superfícies */
   --bg: #e5edf5;
-  --card-bg: rgba(15, 23, 42, 0.92);
-  --card-border: rgba(148, 163, 184, 0.45);
-  --overlay-dark: rgba(0, 0, 0, 0.55);
+  --panel-bg: rgba(15, 23, 42, 0.92);
+  --panel-border: rgba(148, 163, 184, 0.45);
+  --overlay-dark: rgba(0,0,0,0.55);
 
-  /* textos */
   --text-primary: #0f172a;
-  --text-secondary: #4b5563;
-  --text-on-card: #e5e7eb;
+  --text-secondary: #475569;
+  --text-on-panel: #e5e7eb;
 
-  /* botões */
-  --btn-bg: rgba(15, 23, 42, 0.96);
-  --btn-bg-soft: rgba(15, 23, 42, 0.88);
+  --btn-bg: rgba(15, 23, 42, 0.9);
+  --btn-bg-soft: rgba(15, 23, 42, 0.75);
   --btn-text: #f9fafb;
   --btn-border: rgba(148, 163, 184, 0.5);
 
-  /* destaque */
   --accent: #38bdf8;
   --accent-soft: rgba(56, 189, 248, 0.18);
 
-  /* sombras */
   --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.55);
 
-  /* flashcards */
-  --flashcard-front-label: #a5b4fc;
-  --flashcard-back-label: #f97316;
+  --front-label: #a5b4fc;
+  --back-label: #f97316;
+
+  --radius-lg: 24px;
+  --radius-md: 20px;
+  --radius-pill: 999px;
 }
 
-/* MODO DARK – quando o <html> tiver class="dark" */
+
+/* ============================================================
+   2) DARK MODE — AMOLED
+============================================================ */
 html.dark {
-  --bg: #020617; /* preto quase absoluto */
-  --card-bg: rgba(15, 23, 42, 0.96);
-  --card-border: rgba(148, 163, 184, 0.45);
+  --bg: #020617;
+  --panel-bg: rgba(15, 23, 42, 0.97);
+  --panel-border: rgba(148, 163, 184, 0.55);
 
   --text-primary: #e5e7eb;
   --text-secondary: #9ca3af;
-  --text-on-card: #f9fafb;
+  --text-on-panel: #f9fafb;
 
   --btn-bg: rgba(15, 23, 42, 1);
   --btn-bg-soft: rgba(15, 23, 42, 0.95);
@@ -65,24 +73,23 @@ html.dark {
   --accent: #38bdf8;
   --accent-soft: rgba(56, 189, 248, 0.25);
 
-  --flashcard-front-label: #a5b4fc;
-  --flashcard-back-label: #fdba74;
+  --front-label: #a5b4fc;
+  --back-label: #fdba74;
 }
+
 
 /* ============================================================
-   FUNDO (IMAGEM + OVERLAY NO DARK)
+   3) FUNDO (imagem + overlay no dark)
 ============================================================ */
-
 body {
-  min-height: 100%;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-    "Segoe UI", sans-serif;
   color: var(--text-primary);
-  background: var(--bg) url("img/background.png") no-repeat center center fixed;
-background-size: cover;
+  background:
+    var(--bg)
+    url("img/background.png")
+    no-repeat center center fixed;
+  background-size: cover;
 }
 
-/* overlay mais escuro só no modo dark para dar contraste */
 html.dark body::before {
   content: "";
   position: fixed;
@@ -92,10 +99,10 @@ html.dark body::before {
   z-index: -1;
 }
 
-/* ============================================================
-   LAYOUT GERAL
-============================================================ */
 
+/* ============================================================
+   4) LAYOUT
+============================================================ */
 body {
   display: flex;
   flex-direction: column;
@@ -108,10 +115,14 @@ body {
   padding: 32px 16px 80px;
 }
 
-/* ============================================================
-   HEADER + TÍTULOS
-============================================================ */
+.hidden {
+  display: none !important;
+}
 
+
+/* ============================================================
+   5) HEADER + TOGGLE iOS
+============================================================ */
 .site-header {
   max-width: 1200px;
   margin: 0 auto;
@@ -119,92 +130,41 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
 }
 
 .site-header h1 {
   margin: 0;
-  font-size: clamp(1.8rem, 3vw, 2.3rem);
+  font-size: clamp(1.6rem, 3vw, 2.3rem);
   letter-spacing: 0.08em;
-  text-transform: uppercase;
   font-weight: 800;
   color: var(--text-primary);
-  text-shadow: 0 2px 4px rgba(15, 23, 42, 0.6);
+  text-shadow: 0 2px 4px rgba(15,23,42,0.6);
 }
-
-.site-header .subtitle {
-  margin: 4px 0 0;
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-}
-
-/* ============================================================
-   TOGGLE TEMA (ESTILO iOS)
-============================================================ */
 
 .theme-toggle-wrapper {
   display: flex;
   align-items: center;
-  gap: 8px;
 }
 
-/* botão */
+/* botão iOS */
 #theme-toggle {
   position: relative;
-  width: 80px;
-  height: 36px;
-  border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.7);
+  width: 86px;
+  height: 38px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--btn-border);
   background: linear-gradient(135deg, #020617, #0f172a);
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.6);
+  box-shadow: 0 10px 25px rgba(15,23,42,0.6);
   cursor: pointer;
-  outline: none;
-  padding: 0;
-  margin: 0;
-  /* esconde qualquer texto/emoji interno para evitar "duas luas" */
   font-size: 0;
+  padding: 0;
 }
 
-/* trilho interno */
 #theme-toggle::before {
   content: "";
   position: absolute;
   inset: 3px;
-  border-radius: 999px;
-  background: radial-gradient(circle at 20% 30%, #1e293b, #020617);
-}
-
-/* "bolinha" */
-#theme-toggle::after {
-  content: "";
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #f9fafb;
-  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.8);
-  transition: transform 0.25s ease, background 0.25s ease;
-}
-
-/* lua/sol em cima da bolinha (apenas visual, sem texto real) */
-#theme-toggle span {
-  display: none; /* garante que nada apareça se tiver span dentro */
-}
-
-#theme-toggle-icon-moon,
-#theme-toggle-icon-sun {
-  display: none;
-}
-
-/* ícones via pseudo no trilho */
-#theme-toggle::marker {
-  content: none;
-}
-
-/* lua à esquerda */
-#theme-toggle::before {
+  border-radius: var(--radius-pill);
   background:
     radial-gradient(circle at 22% 50%, #facc15 0, #facc15 32%, transparent 34%)
       left 8px center / 22px 22px no-repeat,
@@ -213,13 +173,23 @@ body {
     radial-gradient(circle at 80% 30%, #1e293b, #020617);
 }
 
-/* estado DARK: bolinha vai para a direita e ícones invertem */
-html.dark #theme-toggle::after {
-  transform: translateX(40px);
-  background: #0f172a;
+#theme-toggle::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #f9fafb;
+  box-shadow: 0 6px 16px rgba(15,23,42,0.8);
+  transition: transform 0.25s ease;
 }
 
-/* sol à direita no dark */
+html.dark #theme-toggle::after {
+  transform: translateX(44px);
+}
+
 html.dark #theme-toggle::before {
   background:
     radial-gradient(circle at 78% 50%, #facc15 0, #facc15 32%, #f97316 60%)
@@ -227,10 +197,10 @@ html.dark #theme-toggle::before {
     radial-gradient(circle at 20% 30%, #1e293b, #020617);
 }
 
-/* ============================================================
-   MENU DE CARDS
-============================================================ */
 
+/* ============================================================
+   6) MENU PRINCIPAL
+============================================================ */
 .menu {
   margin-top: 32px;
   display: flex;
@@ -240,26 +210,27 @@ html.dark #theme-toggle::before {
 }
 
 .menu-button {
-  position: relative;
   width: min(340px, 100%);
-  padding: 18px 20px 18px 24px;
-  border-radius: 24px;
-  border: 1px solid var(--card-border);
-  background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.25), transparent),
-    var(--card-bg);
-  color: var(--text-on-card);
+  padding: 18px 20px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--panel-border);
+  background:
+    radial-gradient(circle at 0 0, rgba(148,163,184,0.25), transparent),
+    var(--panel-bg);
+
+  color: var(--text-on-panel);
   text-align: left;
-  cursor: pointer;
+  text-decoration: none;
+
   display: grid;
   grid-template-columns: auto 1fr;
-  grid-template-rows: auto auto;
   column-gap: 12px;
   row-gap: 2px;
-  align-items: center;
+
+  cursor: pointer;
   box-shadow: var(--shadow-soft);
   backdrop-filter: blur(10px);
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease,
-    background 0.18s ease;
+  transition: all 0.2s ease;
 }
 
 .menu-button .icon {
@@ -268,9 +239,9 @@ html.dark #theme-toggle::before {
 }
 
 .menu-button .text-main {
-  font-weight: 700;
   font-size: 1.05rem;
-  letter-spacing: 0.03em;
+  font-weight: 700;
+  color: var(--text-on-panel);
 }
 
 .menu-button .text-sub {
@@ -281,386 +252,193 @@ html.dark #theme-toggle::before {
 .menu-button:hover {
   transform: translateY(-4px);
   border-color: var(--accent);
-  box-shadow: 0 22px 55px rgba(15, 23, 42, 0.75);
-  background: radial-gradient(circle at 0 0, var(--accent-soft), transparent),
-    var(--card-bg);
 }
 
-/* ============================================================
-   PAINÉIS / SEÇÕES
-============================================================ */
 
+/* ============================================================
+   7) PAINÉIS
+============================================================ */
 .panel {
   margin-top: 36px;
   padding: 24px 18px 40px;
-  border-radius: 24px;
-  border: 1px solid var(--card-border);
-  background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.18), transparent),
-    var(--card-bg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--panel-border);
+  background:
+    radial-gradient(circle at 0 0, rgba(148,163,184,0.18), transparent),
+    var(--panel-bg);
+
   box-shadow: var(--shadow-soft);
-  backdrop-filter: blur(10px);
-  color: var(--text-on-card);
+  color: var(--text-on-panel);
 }
 
-.panel h2 {
-  margin-top: 0;
-  margin-bottom: 12px;
-  font-size: 1.4rem;
-}
-
-.panel p {
-  margin-top: 0;
-  color: var(--text-secondary);
-}
-
-.hidden {
-  display: none;
-}
 
 /* ============================================================
-   HEADER DOS FLASHCARDS
+   8) FLASHCARDS
 ============================================================ */
-
-.flashcards-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 16px;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-
-#flashcards-title {
-  margin: 0;
-  font-size: 1.2rem;
-}
-
-/* select de temas */
-#topic-select {
-  padding: 8px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--btn-border);
-  background: var(--btn-bg-soft);
-  color: var(--btn-text);
-  font-size: 0.9rem;
-}
-
-/* botão "Modo revisão" tipo pill */
-#btn-review-mode {
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--btn-border);
-  background: transparent;
-  color: var(--btn-text);
-  font-size: 0.9rem;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-#btn-review-mode.active {
-  background: var(--accent-soft);
-  border-color: var(--accent);
-}
-
-/* ============================================================
-   FLASHCARDS
-============================================================ */
-
 .flashcard-container {
-  margin-top: 8px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* barra de progresso */
-.flashcard-progress {
-  width: 100%;
-  max-width: 520px;
-  margin-bottom: 18px;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-}
-
-.progress-bar {
-  width: 100%;
-  height: 6px;
-  border-radius: 999px;
-  background: rgba(15, 23, 42, 0.6);
-  overflow: hidden;
-  margin-bottom: 6px;
-}
-
-.progress-bar-fill {
-  height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #22c55e, #14b8a6, #38bdf8);
-}
-
-/* card em si */
 .flashcard {
-  position: relative;
   width: min(360px, 100%);
   min-height: 220px;
-  border-radius: 20px;
-  border: 1px solid var(--card-border);
-  background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.2), transparent),
-    var(--card-bg);
+  padding: 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--panel-border);
+  background: var(--panel-bg);
   box-shadow: var(--shadow-soft);
   cursor: pointer;
+
   transform-style: preserve-3d;
-  transition: transform 0.4s ease, box-shadow 0.25s ease;
+  transition: transform 0.4s ease;
 }
 
-.flashcard:hover {
-  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.85);
-}
+.flashcard.flipped .flashcard-front { transform: rotateY(-180deg); }
+.flashcard.flipped .flashcard-back  { transform: rotateY(0deg); }
 
 .flashcard-face {
   position: absolute;
   inset: 0;
-  padding: 18px 20px 20px;
+  padding: 20px;
   backface-visibility: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
-.flashcard-front {
-  transform: rotateY(0deg);
-}
-
-.flashcard-back {
-  transform: rotateY(180deg);
-}
-
-.flashcard.flipped .flashcard-front {
-  transform: rotateY(-180deg);
-}
-
-.flashcard.flipped .flashcard-back {
-  transform: rotateY(0deg);
-}
-
-.flashcard-number {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-}
-
-.flashcard-label {
-  margin: 4px 0 10px;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-weight: 700;
-  color: var(--flashcard-front-label);
-}
-
-.flashcard-back .flashcard-label {
-  color: var(--flashcard-back-label);
-}
+.flashcard-front { transform: rotateY(0deg); }
+.flashcard-back  { transform: rotateY(180deg); }
 
 .flashcard-word {
   font-size: 1.6rem;
   font-weight: 700;
-  margin: 0 0 12px;
-  color: var(--text-on-card);
-}
-
-.flashcard-hint {
-  margin: 0;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
+  color: var(--text-on-panel);
 }
 
 .flashcard-example {
-  margin: 0;
+  margin-top: 8px;
   font-size: 0.9rem;
-  color: var(--text-on-card);
-}
-
-.flashcard-example .example-pt {
-  display: block;
-  margin-top: 4px;
   color: var(--text-secondary);
 }
 
-/* mensagem sem palavras */
-.no-new-words,
-.flashcard-container > p {
-  max-width: 480px;
-  text-align: center;
-  color: var(--text-on-card);
-}
 
 /* ============================================================
-   BOTÕES REVER / APRENDIDA / RESET
+   9) BOTÕES DOS CARDS
 ============================================================ */
-
 .flashcard-actions {
   margin-top: 16px;
   display: flex;
-  justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .card-btn {
   min-width: 140px;
   padding: 10px 14px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid var(--btn-border);
   background: var(--btn-bg-soft);
   color: var(--btn-text);
-  font-size: 0.9rem;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  transition: background 0.18s ease, transform 0.1s ease, box-shadow 0.18s ease;
-}
-
-.card-btn-left {
-  background: rgba(248, 250, 252, 0.06);
-}
-
-.card-btn-right {
-  background: var(--accent-soft);
-  border-color: var(--accent);
+  transition: transform 0.1s, box-shadow 0.2s;
 }
 
 .card-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.5);
+  transform: translateY(-2px);
 }
 
-.flashcard-reset-wrapper {
-  margin-top: 14px;
-  display: flex;
-  justify-content: center;
-}
-
-.card-btn-reset {
-  padding: 7px 14px;
-  border-radius: 999px;
-  border: 1px dashed rgba(148, 163, 184, 0.6);
-  background: transparent;
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-  cursor: pointer;
-}
 
 /* ============================================================
-   FOOTER
+   10) FOOTER
 ============================================================ */
-
 .site-footer {
   text-align: center;
-  padding: 14px 16px 18px;
-  font-size: 0.8rem;
+  padding: 18px;
   color: var(--text-secondary);
-  text-shadow: 0 1px 2px rgba(15, 23, 42, 0.7);
+  font-size: 0.85rem;
 }
 
+
 /* ============================================================
-   RESPONSIVO
+   11) RESPONSIVO
 ============================================================ */
-
 @media (max-width: 768px) {
-  .site-header {
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .site-header h1 {
-    font-size: 1.4rem;
-  }
-
   .menu-button {
     width: 100%;
   }
-
-  .panel {
-    padding-inline: 16px;
-  }
 }
 
-/* HEADER — botão vai para a direita */
-.site-header {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px 16px 8px;
+/* ============================================================
+   CENTRALIZAÇÃO DE TEXTOS NO MENU
+============================================================ */
+
+.menu {
+  text-align: center; /* garante centralização dos textos */
+}
+
+/* Botões do menu com textos centralizados */
+.menu-button {
+  text-align: center;
+  justify-content: center;           /* centralizar conteúdo no grid */
+  grid-template-columns: 1fr;        /* ícone e textos em coluna */
+  row-gap: 6px;
+  padding: 22px 20px;
+}
+
+.menu-button .icon {
+  font-size: 1.8rem;
+  margin-bottom: 4px;
+}
+
+.menu-button .text-main,
+.menu-button .text-sub {
+  text-align: center;
+  width: 100%;
+}
+
+
+/* ============================================================
+   CENTRALIZAR TEXTOS DOS PAINÉIS
+============================================================ */
+
+.panel {
+  text-align: center;
+}
+
+.panel h2 {
+  text-align: center;
+}
+
+.panel p {
+  text-align: center;
+}
+
+/* Flashcard header */
+.flashcards-header {
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.flashcards-controls {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
+  justify-content: center;
 }
 
-.theme-toggle-wrapper {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
+/* Container dos cards centralizado */
+.flashcard-container {
+  text-align: center;
 }
 
-/* ============================================
-   DARK MODE TOGGLE — ESTILO iOS
-============================================ */
-
-.theme-toggle-wrapper {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
+/* Botões de ação no flashcard */
+.flashcard-actions {
+  justify-content: center;
 }
 
-#theme-toggle {
-  position: relative;
-  width: 74px;
-  height: 34px;
-  border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.7);
-  background: linear-gradient(135deg, #1e293b, #0f172a);
-  outline: none;
-  cursor: pointer;
-  padding: 0;
-  font-size: 0; /* esconde texto interno */
-}
-
-/* LUA (modo claro) → aparece à esquerda */
-#theme-toggle::before {
-  content: "🌙";
-  position: absolute;
-  left: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 18px;
-}
-
-/* SOL (modo dark) → aparece à direita */
-html.dark #theme-toggle::before {
-  content: "☀️";
-  right: 8px;
-  left: auto;
-}
-
-/* Bolinha do toggle */
-#theme-toggle::after {
-  content: "";
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.40);
-  transition: transform 0.25s ease, background 0.25s ease;
-}
-
-/* Animação da bolinha no modo dark */
-html.dark #theme-toggle::after {
-  transform: translateX(40px);
-  background: #0f172a;
+/* Mensagem “não há palavras” */
+.flashcard-container > p {
+  text-align: center;
 }
