@@ -8,7 +8,7 @@
 </head>
 
 <body>
-  <!-- ✅ HEADER COM BOTÃO DARK/LIGHT À DIREITA -->
+  <!-- HEADER -->
   <header class="site-header">
     <div>
       <h1>APRENDIZADO DE INGLÊS</h1>
@@ -16,15 +16,15 @@
     </div>
 
     <div class="theme-toggle-wrapper">
-      <!-- botão de tema iOS (o visual vem do CSS) -->
       <button id="theme-toggle" aria-label="Alternar tema"></button>
     </div>
   </header>
 
   <main class="main-content">
 
-    <!-- ✅ MENU PRINCIPAL (APENAS 1 VEZ) -->
+    <!-- MENU PRINCIPAL -->
     <section class="menu">
+
       <button id="btn-flashcards" class="menu-button">
         <span class="icon">🃏</span>
         <span class="text-main">FlashCards</span>
@@ -43,14 +43,15 @@
         <span class="text-sub">Veja as categorias</span>
       </a>
 
-      <a href="estatisticas.html" class="menu-button">
+      <a href="stats.html" class="menu-button">
         <span class="icon">📊</span>
         <span class="text-main">Estatísticas</span>
         <span class="text-sub">Seu progresso geral</span>
       </a>
+
     </section>
 
-    <!-- ✅ SECTION FLASHCARDS -->
+    <!-- FLASHCARDS -->
     <section id="section-flashcards" class="panel hidden">
       <div class="flashcards-header">
         <h2 id="flashcards-title">FlashCards – Pessoas</h2>
@@ -70,7 +71,7 @@
       <div class="flashcard-container"></div>
     </section>
 
-    <!-- ✅ SECTION EXERCÍCIOS -->
+    <!-- EXERCÍCIOS -->
     <section id="section-exercicios" class="panel hidden">
       <h2>Exercícios</h2>
       <p>Aqui você poderá adicionar seus exercícios de inglês.</p>
@@ -79,14 +80,14 @@
   </main>
 
   <footer class="site-footer">
-    <p>Projeto de Estudos de Inglês · Criado por Maurício Moraes Roberti · 😊</p>
+    <p>Projeto de Estudos de Inglês · Criado por Maurício Moraes Roberti 😊</p>
   </footer>
 
-  <!-- ✅ ARQUIVOS DE DADOS (SEMPRE ANTES DO APP.JS) -->
+  <!-- DADOS -->
   <script src="data/A1-people.js"></script>
   <script src="data/A1-food.js"></script>
 
-  <!-- ✅ ARQUIVO PRINCIPAL -->
+  <!-- APP -->
   <script src="app.js"></script>
 </body>
 </html>
