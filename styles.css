@@ -78,8 +78,8 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
     "Segoe UI", sans-serif;
   color: var(--text-primary);
-  background: var(--bg) url("bg-ny-sf.png") no-repeat center center fixed;
-  background-size: cover;
+  background: var(--bg) url("img/background.png") no-repeat center center fixed;
+background-size: cover;
 }
 
 /* overlay mais escuro só no modo dark para dar contraste */
