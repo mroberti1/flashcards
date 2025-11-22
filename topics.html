@@ -20,7 +20,7 @@
 
   <main class="main-content">
     <section class="panel">
-      <h2 style="text-align:center;margin-top:0;">Topics Overview</h2>
+      <h2 class="center-title">Topics Overview</h2>
       <div id="topics-list" class="topics-list"></div>
     </section>
   </main>
@@ -29,8 +29,15 @@
     <p><a href="index.html">← Back to Home</a></p>
   </footer>
 
+  <!-- DATA -->
   <script src="data/A1-people.js"></script>
   <script src="data/A1-food.js"></script>
+  <script src="data/A2-people.js"></script>
+  <script src="data/A2-food.js"></script>
+  <script src="data/A1-random.js"></script>
+  <script src="data/mega-deck-a1-a2.js"></script>
+
+  <!-- APP -->
   <script src="app.js"></script>
 
   <script>
@@ -40,7 +47,7 @@
     listEl.innerHTML = topics.map(t => {
       const total = (t.items || []).length;
       return `
-        <a class="menu-button" href="index.html?tema=${t.topic}">
+        <a class="menu-button" href="index.html?tema=${t.topic}&level=${t.level}">
           <span class="icon">📌</span>
           <span class="text-main">${t.label}</span>
           <span class="text-sub">${total} words</span>

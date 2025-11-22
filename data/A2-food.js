@@ -1,0 +1,126 @@
+window.A2Food = {
+  level: "A2",
+  topic: "food-a2",
+  label: "A2 – Food & Drinks",
+  items: [
+    { id:1, level:"A2", topic:"food-a2", word:"breakfast", translation:"café da manhã", exampleEn:"Breakfast is my favorite meal.", examplePt:"Café da manhã é minha refeição favorita.", status:"new", nextReview:null },
+    { id:2, level:"A2", topic:"food-a2", word:"lunch", translation:"almoço", exampleEn:"We eat lunch at noon.", examplePt:"Nós almoçamos ao meio-dia.", status:"new", nextReview:null },
+    { id:3, level:"A2", topic:"food-a2", word:"dinner", translation:"jantar", exampleEn:"Dinner is ready.", examplePt:"O jantar está pronto.", status:"new", nextReview:null },
+    { id:4, level:"A2", topic:"food-a2", word:"snack", translation:"lanche", exampleEn:"I want a healthy snack.", examplePt:"Quero um lanche saudável.", status:"new", nextReview:null },
+    { id:5, level:"A2", topic:"food-a2", word:"recipe", translation:"receita", exampleEn:"This recipe is easy.", examplePt:"Essa receita é fácil.", status:"new", nextReview:null },
+
+    { id:6, level:"A2", topic:"food-a2", word:"ingredient", translation:"ingrediente", exampleEn:"Eggs are an ingredient here.", examplePt:"Ovos são um ingrediente aqui.", status:"new", nextReview:null },
+    { id:7, level:"A2", topic:"food-a2", word:"seasoning", translation:"tempero", exampleEn:"Add seasoning to taste.", examplePt:"Adicione tempero a gosto.", status:"new", nextReview:null },
+    { id:8, level:"A2", topic:"food-a2", word:"spicy", translation:"apimentado", exampleEn:"This sauce is spicy.", examplePt:"Esse molho é apimentado.", status:"new", nextReview:null },
+    { id:9, level:"A2", topic:"food-a2", word:"sweet", translation:"doce", exampleEn:"I like sweet desserts.", examplePt:"Eu gosto de sobremesas doces.", status:"new", nextReview:null },
+    { id:10, level:"A2", topic:"food-a2", word:"salty", translation:"salgado", exampleEn:"The soup is too salty.", examplePt:"A sopa está salgada demais.", status:"new", nextReview:null },
+
+    { id:11, level:"A2", topic:"food-a2", word:"bitter", translation:"amargo", exampleEn:"Coffee can taste bitter.", examplePt:"Café pode ter gosto amargo.", status:"new", nextReview:null },
+    { id:12, level:"A2", topic:"food-a2", word:"sour", translation:"azedo", exampleEn:"This lemon is sour.", examplePt:"Esse limão é azedo.", status:"new", nextReview:null },
+    { id:13, level:"A2", topic:"food-a2", word:"fresh", translation:"fresco", exampleEn:"These vegetables are fresh.", examplePt:"Esses vegetais estão frescos.", status:"new", nextReview:null },
+    { id:14, level:"A2", topic:"food-a2", word:"frozen", translation:"congelado", exampleEn:"I bought frozen chicken.", examplePt:"Comprei frango congelado.", status:"new", nextReview:null },
+    { id:15, level:"A2", topic:"food-a2", word:"canned", translation:"enlatado", exampleEn:"Canned tuna is cheap.", examplePt:"Atum enlatado é barato.", status:"new", nextReview:null },
+
+    { id:16, level:"A2", topic:"food-a2", word:"grill", translation:"grelhar", exampleEn:"Let’s grill the meat.", examplePt:"Vamos grelhar a carne.", status:"new", nextReview:null },
+    { id:17, level:"A2", topic:"food-a2", word:"boil", translation:"ferver/cozinhar", exampleEn:"Boil the water first.", examplePt:"Ferva a água primeiro.", status:"new", nextReview:null },
+    { id:18, level:"A2", topic:"food-a2", word:"fry", translation:"fritar", exampleEn:"We fry the potatoes.", examplePt:"Nós fritamos as batatas.", status:"new", nextReview:null },
+    { id:19, level:"A2", topic:"food-a2", word:"bake", translation:"assar", exampleEn:"Bake the cake for 30 minutes.", examplePt:"Asse o bolo por 30 minutos.", status:"new", nextReview:null },
+    { id:20, level:"A2", topic:"food-a2", word:"steam", translation:"cozinhar no vapor", exampleEn:"Steam the broccoli.", examplePt:"Cozinhe o brócolis no vapor.", status:"new", nextReview:null },
+
+    { id:21, level:"A2", topic:"food-a2", word:"appetizer", translation:"entrada", exampleEn:"The appetizer was tasty.", examplePt:"A entrada estava gostosa.", status:"new", nextReview:null },
+    { id:22, level:"A2", topic:"food-a2", word:"main course", translation:"prato principal", exampleEn:"Chicken is the main course.", examplePt:"Frango é o prato principal.", status:"new", nextReview:null },
+    { id:23, level:"A2", topic:"food-a2", word:"side dish", translation:"acompanhamento", exampleEn:"Rice is a side dish.", examplePt:"Arroz é um acompanhamento.", status:"new", nextReview:null },
+    { id:24, level:"A2", topic:"food-a2", word:"dessert", translation:"sobremesa", exampleEn:"Dessert comes last.", examplePt:"A sobremesa vem por último.", status:"new", nextReview:null },
+    { id:25, level:"A2", topic:"food-a2", word:"portion", translation:"porção", exampleEn:"This portion is big.", examplePt:"Essa porção é grande.", status:"new", nextReview:null },
+
+    { id:26, level:"A2", topic:"food-a2", word:"diet", translation:"dieta", exampleEn:"He started a new diet.", examplePt:"Ele começou uma nova dieta.", status:"new", nextReview:null },
+    { id:27, level:"A2", topic:"food-a2", word:"vegetarian", translation:"vegetariano", exampleEn:"She is vegetarian.", examplePt:"Ela é vegetariana.", status:"new", nextReview:null },
+    { id:28, level:"A2", topic:"food-a2", word:"vegan", translation:"vegano", exampleEn:"Vegan food has no animal products.", examplePt:"Comida vegana não tem produtos animais.", status:"new", nextReview:null },
+    { id:29, level:"A2", topic:"food-a2", word:"gluten-free", translation:"sem glúten", exampleEn:"I need gluten-free bread.", examplePt:"Preciso de pão sem glúten.", status:"new", nextReview:null },
+    { id:30, level:"A2", topic:"food-a2", word:"lactose-free", translation:"sem lactose", exampleEn:"She drinks lactose-free milk.", examplePt:"Ela bebe leite sem lactose.", status:"new", nextReview:null },
+
+    { id:31, level:"A2", topic:"food-a2", word:"olive oil", translation:"azeite de oliva", exampleEn:"Add olive oil to the salad.", examplePt:"Adicione azeite na salada.", status:"new", nextReview:null },
+    { id:32, level:"A2", topic:"food-a2", word:"vinegar", translation:"vinagre", exampleEn:"Vinegar tastes sour.", examplePt:"Vinagre tem gosto azedo.", status:"new", nextReview:null },
+    { id:33, level:"A2", topic:"food-a2", word:"mayonnaise", translation:"maionese", exampleEn:"He likes mayonnaise on sandwiches.", examplePt:"Ele gosta de maionese no sanduíche.", status:"new", nextReview:null },
+    { id:34, level:"A2", topic:"food-a2", word:"mustard", translation:"mostarda", exampleEn:"Mustard is yellow.", examplePt:"Mostarda é amarela.", status:"new", nextReview:null },
+    { id:35, level:"A2", topic:"food-a2", word:"ketchup", translation:"ketchup", exampleEn:"Can I have ketchup?", examplePt:"Posso ter ketchup?", status:"new", nextReview:null },
+
+    { id:36, level:"A2", topic:"food-a2", word:"soy sauce", translation:"molho shoyu", exampleEn:"Soy sauce is popular in Asia.", examplePt:"Shoyu é popular na Ásia.", status:"new", nextReview:null },
+    { id:37, level:"A2", topic:"food-a2", word:"noodles", translation:"macarrão tipo noodles", exampleEn:"I ate noodles for lunch.", examplePt:"Comi noodles no almoço.", status:"new", nextReview:null },
+    { id:38, level:"A2", topic:"food-a2", word:"lasagna", translation:"lasanha", exampleEn:"Lasagna has cheese and sauce.", examplePt:"Lasanha tem queijo e molho.", status:"new", nextReview:null },
+    { id:39, level:"A2", topic:"food-a2", word:"omelet", translation:"omelete", exampleEn:"She made an omelet.", examplePt:"Ela fez uma omelete.", status:"new", nextReview:null },
+    { id:40, level:"A2", topic:"food-a2", word:"pancake", translation:"panqueca", exampleEn:"Pancakes are soft.", examplePt:"Panquecas são macias.", status:"new", nextReview:null },
+
+    { id:41, level:"A2", topic:"food-a2", word:"cereal", translation:"cereal", exampleEn:"I eat cereal in the morning.", examplePt:"Eu como cereal de manhã.", status:"new", nextReview:null },
+    { id:42, level:"A2", topic:"food-a2", word:"yogurt", translation:"iogurte", exampleEn:"Yogurt is good for digestion.", examplePt:"Iogurte é bom para digestão.", status:"new", nextReview:null },
+    { id:43, level:"A2", topic:"food-a2", word:"butter", translation:"manteiga", exampleEn:"Butter melts easily.", examplePt:"Manteiga derrete fácil.", status:"new", nextReview:null },
+    { id:44, level:"A2", topic:"food-a2", word:"cream", translation:"creme", exampleEn:"Add cream to the sauce.", examplePt:"Adicione creme ao molho.", status:"new", nextReview:null },
+    { id:45, level:"A2", topic:"food-a2", word:"honey", translation:"mel", exampleEn:"Honey is sweet.", examplePt:"Mel é doce.", status:"new", nextReview:null },
+
+    { id:46, level:"A2", topic:"food-a2", word:"jam", translation:"geleia", exampleEn:"I like jam on toast.", examplePt:"Eu gosto de geleia no pão torrado.", status:"new", nextReview:null },
+    { id:47, level:"A2", topic:"food-a2", word:"toast", translation:"torrada", exampleEn:"Toast is crunchy.", examplePt:"Torrada é crocante.", status:"new", nextReview:null },
+    { id:48, level:"A2", topic:"food-a2", word:"sandwich", translation:"sanduíche", exampleEn:"He made a sandwich.", examplePt:"Ele fez um sanduíche.", status:"new", nextReview:null },
+    { id:49, level:"A2", topic:"food-a2", word:"burger", translation:"hambúrguer", exampleEn:"This burger is delicious.", examplePt:"Esse hambúrguer é delicioso.", status:"new", nextReview:null },
+    { id:50, level:"A2", topic:"food-a2", word:"fries", translation:"batata frita", exampleEn:"Fries go with burgers.", examplePt:"Batata frita combina com hambúrguer.", status:"new", nextReview:null },
+
+    { id:51, level:"A2", topic:"food-a2", word:"seafood", translation:"frutos do mar", exampleEn:"Seafood is fresh here.", examplePt:"Os frutos do mar são frescos aqui.", status:"new", nextReview:null },
+    { id:52, level:"A2", topic:"food-a2", word:"shrimp", translation:"camarão", exampleEn:"Shrimp cooks fast.", examplePt:"Camarão cozinha rápido.", status:"new", nextReview:null },
+    { id:53, level:"A2", topic:"food-a2", word:"salmon", translation:"salmão", exampleEn:"Salmon is rich in omega-3.", examplePt:"Salmão é rico em ômega-3.", status:"new", nextReview:null },
+    { id:54, level:"A2", topic:"food-a2", word:"beef steak", translation:"bife de boi", exampleEn:"I ordered a beef steak.", examplePt:"Eu pedi um bife de boi.", status:"new", nextReview:null },
+    { id:55, level:"A2", topic:"food-a2", word:"pork", translation:"carne de porco", exampleEn:"Pork is common in many dishes.", examplePt:"Carne de porco é comum em vários pratos.", status:"new", nextReview:null },
+
+    { id:56, level:"A2", topic:"food-a2", word:"turkey", translation:"peru", exampleEn:"We eat turkey on holidays.", examplePt:"Comemos peru nos feriados.", status:"new", nextReview:null },
+    { id:57, level:"A2", topic:"food-a2", word:"sausages", translation:"salsichas/linguiças", exampleEn:"Sausages are on the grill.", examplePt:"As salsichas estão na churrasqueira.", status:"new", nextReview:null },
+    { id:58, level:"A2", topic:"food-a2", word:"beans", translation:"feijões", exampleEn:"Beans are a good protein source.", examplePt:"Feijões são uma boa fonte de proteína.", status:"new", nextReview:null },
+    { id:59, level:"A2", topic:"food-a2", word:"lentils", translation:"lentilhas", exampleEn:"Lentils cook quickly.", examplePt:"Lentilhas cozinham rápido.", status:"new", nextReview:null },
+    { id:60, level:"A2", topic:"food-a2", word:"chickpeas", translation:"grão-de-bico", exampleEn:"Chickpeas make hummus.", examplePt:"Grão-de-bico faz homus.", status:"new", nextReview:null },
+
+    { id:61, level:"A2", topic:"food-a2", word:"spinach", translation:"espinafre", exampleEn:"Spinach is very healthy.", examplePt:"Espinafre é bem saudável.", status:"new", nextReview:null },
+    { id:62, level:"A2", topic:"food-a2", word:"pumpkin", translation:"abóbora", exampleEn:"Pumpkin soup is warm.", examplePt:"Sopa de abóbora é quentinha.", status:"new", nextReview:null },
+    { id:63, level:"A2", topic:"food-a2", word:"mushroom", translation:"cogumelo", exampleEn:"Mushrooms go well with pasta.", examplePt:"Cogumelos combinam com massa.", status:"new", nextReview:null },
+    { id:64, level:"A2", topic:"food-a2", word:"onion", translation:"cebola", exampleEn:"Onion makes me cry.", examplePt:"Cebola me faz chorar.", status:"new", nextReview:null },
+    { id:65, level:"A2", topic:"food-a2", word:"garlic", translation:"alho", exampleEn:"Garlic adds flavor.", examplePt:"Alho dá sabor.", status:"new", nextReview:null },
+
+    { id:66, level:"A2", topic:"food-a2", word:"ginger", translation:"gengibre", exampleEn:"Ginger tea is good for colds.", examplePt:"Chá de gengibre é bom para resfriado.", status:"new", nextReview:null },
+    { id:67, level:"A2", topic:"food-a2", word:"cucumber", translation:"pepino", exampleEn:"Cucumber is great in salads.", examplePt:"Pepino é ótimo na salada.", status:"new", nextReview:null },
+    { id:68, level:"A2", topic:"food-a2", word:"eggplant", translation:"berinjela", exampleEn:"Eggplant absorbs oil.", examplePt:"Berinjela absorve óleo.", status:"new", nextReview:null },
+    { id:69, level:"A2", topic:"food-a2", word:"zucchini", translation:"abobrinha", exampleEn:"Zucchini is light.", examplePt:"Abobrinha é leve.", status:"new", nextReview:null },
+    { id:70, level:"A2", topic:"food-a2", word:"chili pepper", translation:"pimenta", exampleEn:"Chili pepper is spicy.", examplePt:"Pimenta é apimentada.", status:"new", nextReview:null },
+
+    { id:71, level:"A2", topic:"food-a2", word:"grapes", translation:"uvas", exampleEn:"Grapes are sweet.", examplePt:"Uvas são doces.", status:"new", nextReview:null },
+    { id:72, level:"A2", topic:"food-a2", word:"watermelon", translation:"melancia", exampleEn:"Watermelon is refreshing.", examplePt:"Melancia é refrescante.", status:"new", nextReview:null },
+    { id:73, level:"A2", topic:"food-a2", word:"pineapple", translation:"abacaxi", exampleEn:"Pineapple is tropical.", examplePt:"Abacaxi é tropical.", status:"new", nextReview:null },
+    { id:74, level:"A2", topic:"food-a2", word:"strawberry", translation:"morango", exampleEn:"Strawberries are red.", examplePt:"Morangos são vermelhos.", status:"new", nextReview:null },
+    { id:75, level:"A2", topic:"food-a2", word:"blueberry", translation:"mirtilo", exampleEn:"Blueberries are small.", examplePt:"Mirtilos são pequenos.", status:"new", nextReview:null },
+
+    { id:76, level:"A2", topic:"food-a2", word:"peach", translation:"pêssego", exampleEn:"Peaches smell good.", examplePt:"Pêssegos têm cheiro bom.", status:"new", nextReview:null },
+    { id:77, level:"A2", topic:"food-a2", word:"pear", translation:"pera", exampleEn:"This pear is ripe.", examplePt:"Essa pera está madura.", status:"new", nextReview:null },
+    { id:78, level:"A2", topic:"food-a2", word:"plum", translation:"ameixa", exampleEn:"Plums can be sweet or sour.", examplePt:"Ameixas podem ser doces ou azedas.", status:"new", nextReview:null },
+    { id:79, level:"A2", topic:"food-a2", word:"coconut", translation:"coco", exampleEn:"Coconut water is popular.", examplePt:"Água de coco é popular.", status:"new", nextReview:null },
+    { id:80, level:"A2", topic:"food-a2", word:"nuts", translation:"castanhas/nozes", exampleEn:"Nuts are high in calories.", examplePt:"Castanhas têm muitas calorias.", status:"new", nextReview:null },
+
+    { id:81, level:"A2", topic:"food-a2", word:"almonds", translation:"amêndoas", exampleEn:"Almonds are crunchy.", examplePt:"Amêndoas são crocantes.", status:"new", nextReview:null },
+    { id:82, level:"A2", topic:"food-a2", word:"oats", translation:"aveia", exampleEn:"Oats help keep you full.", examplePt:"Aveia ajuda a dar saciedade.", status:"new", nextReview:null },
+    { id:83, level:"A2", topic:"food-a2", word:"flour", translation:"farinha", exampleEn:"Flour is used for bread.", examplePt:"Farinha é usada para pão.", status:"new", nextReview:null },
+    { id:84, level:"A2", topic:"food-a2", word:"sugar", translation:"açúcar", exampleEn:"Too much sugar is bad.", examplePt:"Muito açúcar faz mal.", status:"new", nextReview:null },
+    { id:85, level:"A2", topic:"food-a2", word:"brown sugar", translation:"açúcar mascavo", exampleEn:"Brown sugar has more flavor.", examplePt:"Açúcar mascavo tem mais sabor.", status:"new", nextReview:null },
+
+    { id:86, level:"A2", topic:"food-a2", word:"sparkling water", translation:"água com gás", exampleEn:"Sparkling water is cold.", examplePt:"Água com gás está gelada.", status:"new", nextReview:null },
+    { id:87, level:"A2", topic:"food-a2", word:"juice", translation:"suco", exampleEn:"Orange juice is fresh.", examplePt:"Suco de laranja é fresco.", status:"new", nextReview:null },
+    { id:88, level:"A2", topic:"food-a2", word:"smoothie", translation:"vitamina/batida", exampleEn:"I made a banana smoothie.", examplePt:"Fiz uma vitamina de banana.", status:"new", nextReview:null },
+    { id:89, level:"A2", topic:"food-a2", word:"milkshake", translation:"milk-shake", exampleEn:"This milkshake is thick.", examplePt:"Esse milk-shake é cremoso.", status:"new", nextReview:null },
+    { id:90, level:"A2", topic:"food-a2", word:"hot chocolate", translation:"chocolate quente", exampleEn:"Hot chocolate warms you up.", examplePt:"Chocolate quente esquenta.", status:"new", nextReview:null },
+
+    { id:91, level:"A2", topic:"food-a2", word:"espresso", translation:"café expresso", exampleEn:"He ordered an espresso.", examplePt:"Ele pediu um expresso.", status:"new", nextReview:null },
+    { id:92, level:"A2", topic:"food-a2", word:"herbal tea", translation:"chá de ervas", exampleEn:"Herbal tea helps me relax.", examplePt:"Chá de ervas me ajuda a relaxar.", status:"new", nextReview:null },
+    { id:93, level:"A2", topic:"food-a2", word:"ice cream", translation:"sorvete", exampleEn:"Ice cream melts fast.", examplePt:"Sorvete derrete rápido.", status:"new", nextReview:null },
+    { id:94, level:"A2", topic:"food-a2", word:"cookie", translation:"biscoito", exampleEn:"I ate two cookies.", examplePt:"Comi dois biscoitos.", status:"new", nextReview:null },
+    { id:95, level:"A2", topic:"food-a2", word:"chocolate bar", translation:"barra de chocolate", exampleEn:"A chocolate bar is a quick dessert.", examplePt:"Uma barra de chocolate é uma sobremesa rápida.", status:"new", nextReview:null },
+
+    { id:96, level:"A2", topic:"food-a2", word:"pie", translation:"torta", exampleEn:"Apple pie is classic.", examplePt:"Torta de maçã é clássica.", status:"new", nextReview:null },
+    { id:97, level:"A2", topic:"food-a2", word:"pudding", translation:"pudim", exampleEn:"Pudding is sweet and soft.", examplePt:"Pudim é doce e macio.", status:"new", nextReview:null },
+    { id:98, level:"A2", topic:"food-a2", word:"barbecue", translation:"churrasco", exampleEn:"We had barbecue on Sunday.", examplePt:"Tivemos churrasco no domingo.", status:"new", nextReview:null },
+    { id:99, level:"A2", topic:"food-a2", word:"leftovers", translation:"sobras", exampleEn:"Let’s eat leftovers.", examplePt:"Vamos comer as sobras.", status:"new", nextReview:null },
+    { id:100, level:"A2", topic:"food-a2", word:"grocery store", translation:"mercado", exampleEn:"I buy food at the grocery store.", examplePt:"Compro comida no mercado.", status:"new", nextReview:null }
+  ]
+};

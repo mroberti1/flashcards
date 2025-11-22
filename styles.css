@@ -1,11 +1,9 @@
 /* ============================================================
-   0) RESET / BASE
+   RESET
 ============================================================ */
 *,
 *::before,
-*::after {
-  box-sizing: border-box;
-}
+*::after { box-sizing: border-box; }
 
 html, body {
   margin: 0;
@@ -13,29 +11,21 @@ html, body {
   height: 100%;
 }
 
-body {
-  min-height: 100%;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-    "Segoe UI", sans-serif;
-  line-height: 1.4;
-}
-
-
 /* ============================================================
-   1) TOKENS DE TEMA (LIGHT PADRÃO)
+   THEME VARIABLES (LIGHT DEFAULT)
 ============================================================ */
 :root {
   --bg: #e5edf5;
-  --panel-bg: rgba(15, 23, 42, 0.92);
-  --panel-border: rgba(148, 163, 184, 0.45);
-  --overlay-dark: rgba(0,0,0,0.55);
+  --card-bg: rgba(15, 23, 42, 0.92);
+  --card-border: rgba(148, 163, 184, 0.45);
+  --overlay-dark: rgba(0, 0, 0, 0.55);
 
   --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-on-panel: #e5e7eb;
+  --text-secondary: #4b5563;
+  --text-on-card: #e5e7eb;
 
-  --btn-bg: rgba(15, 23, 42, 0.9);
-  --btn-bg-soft: rgba(15, 23, 42, 0.75);
+  --btn-bg: rgba(15, 23, 42, 0.96);
+  --btn-bg-soft: rgba(15, 23, 42, 0.88);
   --btn-text: #f9fafb;
   --btn-border: rgba(148, 163, 184, 0.5);
 
@@ -44,26 +34,19 @@ body {
 
   --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.55);
 
-  --front-label: #a5b4fc;
-  --back-label: #f97316;
-
-  --radius-lg: 24px;
-  --radius-md: 20px;
-  --radius-pill: 999px;
+  --flashcard-front-label: #a5b4fc;
+  --flashcard-back-label: #f97316;
 }
 
-
-/* ============================================================
-   2) DARK MODE — AMOLED
-============================================================ */
+/* DARK MODE */
 html.dark {
   --bg: #020617;
-  --panel-bg: rgba(15, 23, 42, 0.97);
-  --panel-border: rgba(148, 163, 184, 0.55);
+  --card-bg: rgba(15, 23, 42, 0.96);
+  --card-border: rgba(148, 163, 184, 0.45);
 
   --text-primary: #e5e7eb;
   --text-secondary: #9ca3af;
-  --text-on-panel: #f9fafb;
+  --text-on-card: #f9fafb;
 
   --btn-bg: rgba(15, 23, 42, 1);
   --btn-bg-soft: rgba(15, 23, 42, 0.95);
@@ -73,23 +56,26 @@ html.dark {
   --accent: #38bdf8;
   --accent-soft: rgba(56, 189, 248, 0.25);
 
-  --front-label: #a5b4fc;
-  --back-label: #fdba74;
+  --flashcard-front-label: #a5b4fc;
+  --flashcard-back-label: #fdba74;
 }
-
 
 /* ============================================================
-   3) FUNDO (imagem + overlay no dark)
+   BACKGROUND IMAGE (background.png at project root)
 ============================================================ */
 body {
+  min-height: 100%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
   color: var(--text-primary);
-  background:
-    var(--bg)
-    url("img/background.png")
-    no-repeat center center fixed;
+  background: var(--bg) url("/img/background.png") no-repeat center center fixed;
   background-size: cover;
+
+  display: flex;
+  flex-direction: column;
 }
 
+/* Dark overlay for readability */
 html.dark body::before {
   content: "";
   position: fixed;
@@ -99,15 +85,9 @@ html.dark body::before {
   z-index: -1;
 }
 
-
 /* ============================================================
-   4) LAYOUT
+   LAYOUT
 ============================================================ */
-body {
-  display: flex;
-  flex-direction: column;
-}
-
 .main-content {
   flex: 1;
   max-width: 1200px;
@@ -115,13 +95,8 @@ body {
   padding: 32px 16px 80px;
 }
 
-.hidden {
-  display: none !important;
-}
-
-
 /* ============================================================
-   5) HEADER + TOGGLE iOS
+   HEADER
 ============================================================ */
 .site-header {
   max-width: 1200px;
@@ -130,41 +105,54 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
 }
 
-.site-header h1 {
+.header-left h1 {
   margin: 0;
-  font-size: clamp(1.6rem, 3vw, 2.3rem);
+  font-size: clamp(1.8rem, 3vw, 2.3rem);
   letter-spacing: 0.08em;
+  text-transform: uppercase;
   font-weight: 800;
   color: var(--text-primary);
-  text-shadow: 0 2px 4px rgba(15,23,42,0.6);
+  text-shadow: 0 2px 4px rgba(15, 23, 42, 0.6);
+}
+
+.subtitle {
+  margin: 6px 0 0;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
 }
 
 .theme-toggle-wrapper {
+  margin-left: auto;
   display: flex;
   align-items: center;
 }
 
-/* botão iOS */
+/* ============================================================
+   iOS THEME TOGGLE BUTTON (no inner emoji)
+============================================================ */
 #theme-toggle {
   position: relative;
-  width: 86px;
+  width: 82px;
   height: 38px;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--btn-border);
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
   background: linear-gradient(135deg, #020617, #0f172a);
-  box-shadow: 0 10px 25px rgba(15,23,42,0.6);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.6);
   cursor: pointer;
-  font-size: 0;
+  outline: none;
   padding: 0;
+  margin: 0;
+  font-size: 0;
 }
 
 #theme-toggle::before {
   content: "";
   position: absolute;
   inset: 3px;
-  border-radius: var(--radius-pill);
+  border-radius: 999px;
   background:
     radial-gradient(circle at 22% 50%, #facc15 0, #facc15 32%, transparent 34%)
       left 8px center / 22px 22px no-repeat,
@@ -182,12 +170,13 @@ body {
   height: 30px;
   border-radius: 50%;
   background: #f9fafb;
-  box-shadow: 0 6px 16px rgba(15,23,42,0.8);
-  transition: transform 0.25s ease;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.8);
+  transition: transform 0.25s ease, background 0.25s ease;
 }
 
 html.dark #theme-toggle::after {
-  transform: translateX(44px);
+  transform: translateX(40px);
+  background: #0f172a;
 }
 
 html.dark #theme-toggle::before {
@@ -197,9 +186,8 @@ html.dark #theme-toggle::before {
     radial-gradient(circle at 20% 30%, #1e293b, #020617);
 }
 
-
 /* ============================================================
-   6) MENU PRINCIPAL
+   MENU CARDS
 ============================================================ */
 .menu {
   margin-top: 32px;
@@ -210,27 +198,28 @@ html.dark #theme-toggle::before {
 }
 
 .menu-button {
+  position: relative;
   width: min(340px, 100%);
-  padding: 18px 20px;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--panel-border);
+  padding: 18px 20px 18px 24px;
+  border-radius: 24px;
+  border: 1px solid var(--card-border);
   background:
-    radial-gradient(circle at 0 0, rgba(148,163,184,0.25), transparent),
-    var(--panel-bg);
-
-  color: var(--text-on-panel);
+    radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.25), transparent),
+    var(--card-bg);
+  color: var(--text-on-card);
   text-align: left;
-  text-decoration: none;
-
+  cursor: pointer;
   display: grid;
   grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
   column-gap: 12px;
   row-gap: 2px;
-
-  cursor: pointer;
+  align-items: center;
   box-shadow: var(--shadow-soft);
   backdrop-filter: blur(10px);
-  transition: all 0.2s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease,
+    background 0.18s ease;
+  text-decoration: none;
 }
 
 .menu-button .icon {
@@ -239,9 +228,9 @@ html.dark #theme-toggle::before {
 }
 
 .menu-button .text-main {
-  font-size: 1.05rem;
   font-weight: 700;
-  color: var(--text-on-panel);
+  font-size: 1.05rem;
+  letter-spacing: 0.03em;
 }
 
 .menu-button .text-sub {
@@ -252,193 +241,290 @@ html.dark #theme-toggle::before {
 .menu-button:hover {
   transform: translateY(-4px);
   border-color: var(--accent);
+  box-shadow: 0 22px 55px rgba(15, 23, 42, 0.75);
+  background:
+    radial-gradient(circle at 0 0, var(--accent-soft), transparent),
+    var(--card-bg);
 }
 
-
 /* ============================================================
-   7) PAINÉIS
+   PANELS
 ============================================================ */
 .panel {
   margin-top: 36px;
   padding: 24px 18px 40px;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--panel-border);
+  border-radius: 24px;
+  border: 1px solid var(--card-border);
   background:
-    radial-gradient(circle at 0 0, rgba(148,163,184,0.18), transparent),
-    var(--panel-bg);
-
+    radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.18), transparent),
+    var(--card-bg);
   box-shadow: var(--shadow-soft);
-  color: var(--text-on-panel);
+  backdrop-filter: blur(10px);
+  color: var(--text-on-card);
 }
 
+.center-title { text-align: center; margin-top: 0; }
+.center-text { text-align: center; }
+
+.soft-hr {
+  opacity: .2;
+  margin: 20px 0;
+}
+
+.hidden { display: none; }
 
 /* ============================================================
-   8) FLASHCARDS
+   FLASHCARDS HEADER
+============================================================ */
+.flashcards-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+#flashcards-title {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+/* select */
+#topic-select {
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--btn-border);
+  background: var(--btn-bg-soft);
+  color: var(--btn-text);
+  font-size: 0.9rem;
+}
+
+/* pill button */
+.pill-button {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--btn-border);
+  background: transparent;
+  color: var(--btn-text);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pill-button.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+/* ============================================================
+   FLASHCARDS
 ============================================================ */
 .flashcard-container {
-  margin-top: 20px;
+  margin-top: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.flashcard {
-  width: min(360px, 100%);
-  min-height: 220px;
-  padding: 20px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--panel-border);
-  background: var(--panel-bg);
-  box-shadow: var(--shadow-soft);
-  cursor: pointer;
-
-  transform-style: preserve-3d;
-  transition: transform 0.4s ease;
+/* progress bar */
+.flashcard-progress {
+  width: 100%;
+  max-width: 520px;
+  margin-bottom: 18px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
 }
 
-.flashcard.flipped .flashcard-front { transform: rotateY(-180deg); }
-.flashcard.flipped .flashcard-back  { transform: rotateY(0deg); }
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.6);
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #22c55e, #14b8a6, #38bdf8);
+}
+
+/* card */
+.flashcard {
+  position: relative;
+  width: min(360px, 100%);
+  min-height: 220px;
+  border-radius: 20px;
+  border: 1px solid var(--card-border);
+  background:
+    radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.2), transparent),
+    var(--card-bg);
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.4s ease, box-shadow 0.25s ease;
+}
+
+.flashcard:hover {
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.85);
+}
 
 .flashcard-face {
   position: absolute;
   inset: 0;
-  padding: 20px;
+  padding: 18px 20px 20px;
   backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .flashcard-front { transform: rotateY(0deg); }
 .flashcard-back  { transform: rotateY(180deg); }
 
-.flashcard-word {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: var(--text-on-panel);
-}
+.flashcard.flipped .flashcard-front { transform: rotateY(-180deg); }
+.flashcard.flipped .flashcard-back  { transform: rotateY(0deg); }
 
-.flashcard-example {
-  margin-top: 8px;
-  font-size: 0.9rem;
+.flashcard-number {
+  font-size: 0.8rem;
   color: var(--text-secondary);
 }
 
+.flashcard-label {
+  margin: 4px 0 10px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: var(--flashcard-front-label);
+}
 
-/* ============================================================
-   9) BOTÕES DOS CARDS
-============================================================ */
+.flashcard-back .flashcard-label { color: var(--flashcard-back-label); }
+
+.flashcard-word {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--text-on-card);
+}
+
+.flashcard-hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.flashcard-example {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-on-card);
+}
+
+.flashcard-example .example-pt {
+  display: block;
+  margin-top: 4px;
+  color: var(--text-secondary);
+}
+
+.flashcard-container > p {
+  max-width: 480px;
+  text-align: center;
+  color: var(--text-on-card);
+}
+
+/* actions */
 .flashcard-actions {
   margin-top: 16px;
   display: flex;
+  justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
-  justify-content: center;
 }
 
 .card-btn {
   min-width: 140px;
   padding: 10px 14px;
-  border-radius: var(--radius-pill);
+  border-radius: 999px;
   border: 1px solid var(--btn-border);
   background: var(--btn-bg-soft);
   color: var(--btn-text);
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: transform 0.1s, box-shadow 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background 0.18s ease, transform 0.1s ease, box-shadow 0.18s ease;
 }
+
+.card-btn-left  { background: rgba(248, 250, 252, 0.06); }
+.card-btn-right { background: var(--accent-soft); border-color: var(--accent); }
 
 .card-btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.5);
 }
 
+.flashcard-reset-wrapper {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+}
+
+.card-btn-reset {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px dashed rgba(148, 163, 184, 0.6);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
 
 /* ============================================================
-   10) FOOTER
+   STATS PAGE HELPERS
+============================================================ */
+.stats-topic {
+  margin-bottom: 16px;
+}
+
+.stats-topic-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+/* ============================================================
+   FOOTER
 ============================================================ */
 .site-footer {
   text-align: center;
-  padding: 18px;
+  padding: 14px 16px 18px;
+  font-size: 0.8rem;
   color: var(--text-secondary);
-  font-size: 0.85rem;
+  text-shadow: 0 1px 2px rgba(15, 23, 42, 0.7);
 }
 
+.site-footer a {
+  color: inherit;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+}
 
 /* ============================================================
-   11) RESPONSIVO
+   RESPONSIVE
 ============================================================ */
 @media (max-width: 768px) {
-  .menu-button {
-    width: 100%;
-  }
-}
-
-/* ============================================================
-   CENTRALIZAÇÃO DE TEXTOS NO MENU
-============================================================ */
-
-.menu {
-  text-align: center; /* garante centralização dos textos */
-}
-
-/* Botões do menu com textos centralizados */
-.menu-button {
-  text-align: center;
-  justify-content: center;           /* centralizar conteúdo no grid */
-  grid-template-columns: 1fr;        /* ícone e textos em coluna */
-  row-gap: 6px;
-  padding: 22px 20px;
-}
-
-.menu-button .icon {
-  font-size: 1.8rem;
-  margin-bottom: 4px;
-}
-
-.menu-button .text-main,
-.menu-button .text-sub {
-  text-align: center;
-  width: 100%;
-}
-
-
-/* ============================================================
-   CENTRALIZAR TEXTOS DOS PAINÉIS
-============================================================ */
-
-.panel {
-  text-align: center;
-}
-
-.panel h2 {
-  text-align: center;
-}
-
-.panel p {
-  text-align: center;
-}
-
-/* Flashcard header */
-.flashcards-header {
-  justify-content: center;
-  text-align: center;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.flashcards-controls {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-}
-
-/* Container dos cards centralizado */
-.flashcard-container {
-  text-align: center;
-}
-
-/* Botões de ação no flashcard */
-.flashcard-actions {
-  justify-content: center;
-}
-
-/* Mensagem “não há palavras” */
-.flashcard-container > p {
-  text-align: center;
+  .site-header { flex-direction: row; align-items: center; }
+  .header-left h1 { font-size: 1.4rem; }
+  .menu-button { width: 100%; }
+  .panel { padding-inline: 16px; }
 }

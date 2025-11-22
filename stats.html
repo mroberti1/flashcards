@@ -20,10 +20,11 @@
 
   <main class="main-content">
     <section class="panel">
-      <h2 style="text-align:center;margin-top:0;">Overall Progress</h2>
-
+      <h2 class="center-title">Overall Progress</h2>
       <div id="stats-summary"></div>
-      <hr style="opacity:.2;margin:20px 0;">
+
+      <hr class="soft-hr">
+
       <div id="stats-topics"></div>
     </section>
   </main>
@@ -32,8 +33,15 @@
     <p><a href="index.html">← Back to Home</a></p>
   </footer>
 
+  <!-- DATA -->
   <script src="data/A1-people.js"></script>
   <script src="data/A1-food.js"></script>
+  <script src="data/A2-people.js"></script>
+  <script src="data/A2-food.js"></script>
+  <script src="data/A1-random.js"></script>
+  <script src="data/mega-deck-a1-a2.js"></script>
+
+  <!-- APP -->
   <script src="app.js"></script>
 
   <script>
@@ -41,13 +49,17 @@
     const topicsEl = document.getElementById("stats-topics");
     const topics = window.__TOPICS_REGISTRY__ || [];
     const STATS_KEY = "flashcards_stats_v2";
+
     const saved = JSON.parse(localStorage.getItem(STATS_KEY) || "{}");
 
-    let globalTotal = 0, globalLearned = 0, globalReviewed = 0;
+    let globalTotal = 0;
+    let globalLearned = 0;
+    let globalReviewed = 0;
 
     topics.forEach(t => {
       const total = (t.items || []).length;
-      const s = saved[t.topic] || { learned: 0, reviewed: 0 };
+      const key = `${t.level}:${t.topic}`;
+      const s = saved[key] || { learned: 0, reviewed: 0 };
       globalTotal += total;
       globalLearned += s.learned || 0;
       globalReviewed += s.reviewed || 0;
@@ -58,26 +70,24 @@
       : 0;
 
     summaryEl.innerHTML = `
-      <p style="text-align:center;">
+      <p class="center-text">
         Learned: <strong>${globalLearned}</strong> / <strong>${globalTotal}</strong>
         (${globalPercent}%)
       </p>
       <div class="progress-bar">
         <div class="progress-bar-fill" style="width:${globalPercent}%;"></div>
       </div>
-      <p style="text-align:center;margin-top:8px;opacity:.8;">
-        Reviewed actions: ${globalReviewed}
-      </p>
     `;
 
     topicsEl.innerHTML = topics.map(t => {
       const total = (t.items || []).length;
-      const s = saved[t.topic] || { learned: 0, reviewed: 0 };
+      const key = `${t.level}:${t.topic}`;
+      const s = saved[key] || { learned: 0, reviewed: 0 };
       const pct = total ? Math.round((s.learned / total) * 100) : 0;
 
       return `
-        <div style="margin-bottom:16px;">
-          <div style="display:flex;justify-content:space-between;">
+        <div class="stats-topic">
+          <div class="stats-topic-row">
             <strong>${t.label}</strong>
             <span>${s.learned || 0}/${total} (${pct}%)</span>
           </div>
@@ -88,6 +98,5 @@
       `;
     }).join("");
   </script>
-
 </body>
 </html>

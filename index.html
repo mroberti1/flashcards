@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>English Learning</title>
+  <title>English Flashcards</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
 
-  <!-- HEADER -->
+<body>
   <header class="site-header">
     <div class="header-left">
-      <h1>ENGLISH LEARNING</h1>
+      <h1>ENGLISH FLASHCARDS</h1>
       <p class="subtitle">Choose how you want to study today</p>
     </div>
+
     <div class="theme-toggle-wrapper">
       <button id="theme-toggle" aria-label="Toggle theme"></button>
     </div>
@@ -26,7 +26,7 @@
       <button id="btn-flashcards" class="menu-button">
         <span class="icon">🃏</span>
         <span class="text-main">Flashcards</span>
-        <span class="text-sub">Review vocabulary with cards</span>
+        <span class="text-sub">Review vocabulary</span>
       </button>
 
       <button id="btn-exercises" class="menu-button">
@@ -38,13 +38,13 @@
       <a href="topics.html" class="menu-button">
         <span class="icon">📚</span>
         <span class="text-main">All Topics</span>
-        <span class="text-sub">See vocabulary categories</span>
+        <span class="text-sub">Browse categories</span>
       </a>
 
       <a href="stats.html" class="menu-button">
         <span class="icon">📊</span>
         <span class="text-main">Statistics</span>
-        <span class="text-sub">Your progress by topic</span>
+        <span class="text-sub">Your progress</span>
       </a>
     </section>
 
@@ -68,20 +68,36 @@
     <!-- EXERCISES SECTION -->
     <section id="section-exercises" class="panel hidden">
       <h2>Exercises</h2>
-      <p>Add your exercises here.</p>
+      <p>Add your English exercises here.</p>
     </section>
 
   </main>
 
   <footer class="site-footer">
-    <p>English Study Project · Created by Maurício Moraes Roberti 😊</p>
+    <p>Study Project English · Created by Mauricio Moraes Roberti 😊</p>
   </footer>
 
-  <!-- DATA FILES (ALWAYS BEFORE app.js) -->
+  <!-- DATA FILES (always before app.js) -->
   <script src="data/A1-people.js"></script>
   <script src="data/A1-food.js"></script>
+  <script src="data/A2-people.js"></script>
+  <script src="data/A2-food.js"></script>
+  <script src="data/A1-random.js"></script>
+  <script src="data/mega-deck-a1-a2.js"></script>
 
-  <!-- MAIN APP -->
+  <!-- APP -->
   <script src="app.js"></script>
+
+  <!-- Fill select dynamically -->
+  <script>
+    const select = document.getElementById("topic-select");
+    const topics = window.__TOPICS_REGISTRY__ || [];
+
+    select.innerHTML = topics.map(t => `
+      <option value="${t.level}:${t.topic}">
+        ${t.label} (${(t.items||[]).length})
+      </option>
+    `).join("");
+  </script>
 </body>
 </html>
